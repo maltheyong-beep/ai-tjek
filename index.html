@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="da">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="AI-tjek undersøger sproglige mønstre i dansk, tysk og engelsk tekst. Gratis, lokal tekstanalyse uden upload til en server.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>AI-tjek — Se mønstrene i din tekst</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%230071e3'/%3E%3Cpath d='m17 33 10 10 21-23' fill='none' stroke='white' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./style.css">
+  <script src="./script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#tekst">Spring til tekstfeltet</a>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+  <header class="site-header">
+    <nav class="nav wrap" aria-label="Hovednavigation">
+      <a class="brand" href="#top" aria-label="AI-tjek, til toppen">
+        <span class="brand-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 12 4 4 8-9"/></svg></span>
+        AI-tjek<span class="beta">BETA</span>
+      </a>
+      <div class="nav-links"><a href="#baggrund">Sådan virker det</a><a href="#menneskeligt">Skriv mere naturligt</a></div>
+      <span class="local-pill"><span></span> Kun på din enhed</span>
+    </nav>
+  </header>
+
+  <main id="top" class="wrap">
+    <section class="hero reveal" aria-labelledby="hero-title">
+      <div class="eyebrow"><span class="mini-spark" aria-hidden="true">✦</span> DIN TEKST. ET NYT PERSPEKTIV.</div>
+      <h1 id="hero-title">Menneske eller AI?<br><span>Se efter mønstrene.</span></h1>
+      <p class="hero-description">Få et forklarligt estimat. Forstå signalerne.<br class="desktop-break"> Og giv din tekst mere af din egen stemme.</p>
+      <div class="hero-facts"><span>Dansk · Tysk · Engelsk</span><span class="fact-dot" aria-hidden="true"></span><span>Gratis · Ingen konto</span></div>
+    </section>
+
+    <section id="analyse" class="workspace" aria-label="Tekst og analyse">
+      <section class="card editor-card reveal" aria-labelledby="editor-title">
+        <div class="card-topline"><div class="section-label"><span class="step">01</span><h2 id="editor-title">Din tekst</h2></div><button type="button" class="text-button" id="eksempel">Prøv et eksempel <span aria-hidden="true">↗</span></button></div>
+        <div class="editor-toolbar">
+          <label for="sprog">Tekstens sprog</label>
+          <select id="sprog" aria-label="Vælg tekstens sprog"><option value="auto">Registrer automatisk</option><option value="da">Dansk</option><option value="de">Tysk</option><option value="en">Engelsk</option></select>
+        </div>
+        <label class="sr-only" for="tekst">Indsæt teksten, du vil analysere</label>
+        <textarea id="tekst" placeholder="Indsæt din tekst her …&#10;&#10;Det kan være en opgave, en artikel eller en tekst, du selv arbejder på." spellcheck="false" aria-describedby="ordtaeller tekst-help graense-fejl"></textarea>
+        <div class="editor-meta"><span id="sprog-status">Vælg et sprog, eller lad os registrere det.</span><span id="ordtaeller">0 / 5.000 ord</span></div>
+        <div id="graense-fejl" class="inline-message error-message" role="alert" hidden></div>
+        <div class="editor-actions"><button type="button" id="ryd" class="quiet-button" disabled>Ryd tekst</button><button type="button" id="analyser" class="primary-button" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>Analysér</span><span class="key-hint" aria-hidden="true">⌘ ↵</span></button></div>
+        <p id="tekst-help" class="privacy-line"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg> Al analyse sker lokalt. Din tekst sendes ingen steder.</p>
+      </section>
+
+      <section class="card result-card reveal" aria-labelledby="result-title">
+        <div class="card-topline"><div class="section-label"><span class="step">02</span><h2 id="result-title">Dit resultat</h2></div><span id="result-language" class="subtle-pill">Lokal analyse</span></div>
+        <div id="tomt-resultat" class="empty-result">
+          <div class="empty-illustration" aria-hidden="true"><div class="paper-icon"><i></i><i></i><i></i><i></i></div><span class="glass-icon"><svg viewBox="0 0 48 48"><circle cx="20" cy="20" r="12"/><path d="m29 29 11 11"/><path d="m14 20 4 4 8-8"/></svg></span><span class="little-star">✦</span></div>
+          <h3>Et ekstra blik på dine ord.</h3><p id="empty-description">Indsæt en tekst, og se hvilke sproglige<br>træk der påvirker vurderingen.</p>
+          <div class="empty-tags"><span>Struktur</span><span>Ordvalg</span><span>Variation</span></div>
+        </div>
+        <div id="resultat" hidden>
+          <div class="score-layout">
+            <div id="score-gauge" class="score-gauge" role="img" aria-label="AI-score afventer analyse">
+              <svg viewBox="0 0 180 180" aria-hidden="true"><circle class="gauge-track" cx="90" cy="90" r="76"/><circle id="score-ring" class="gauge-progress" cx="90" cy="90" r="76" pathLength="100"/></svg>
+              <div class="gauge-value"><span><span id="score-value">0</span><small>%</small></span><span>AI-score</span></div>
+            </div>
+            <div class="score-summary"><span class="eyebrow small">HEURISTISK ESTIMAT</span><h3 id="score-label"></h3><p id="score-description"></p><span id="certainty-label" class="subtle-pill"></span></div>
+          </div>
+          <div class="result-disclaimer"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-9v1"/></svg><p><strong>Et estimat. Ikke et bevis.</strong> Procenten er en vægtet mønsterscore, ikke en målt sandsynlighed for AI-forfatterskab.</p></div>
+          <div class="stats-row"><div><strong id="stat-ord">—</strong><span>ord</span></div><div><strong id="stat-saetninger">—</strong><span>sætninger</span></div><div><strong id="stat-laengde">—</strong><span>ord / sætning</span></div></div>
+          <p id="kort-note" class="small-note" hidden></p>
+          <div class="signals-heading"><h3>Det trækker scoren</h3><span>Grundscore: 24 point</span></div>
+          <div id="signaler" class="signals"></div>
+          <details class="calculation"><summary>Se beregning og alle målinger</summary><div id="beregning"></div></details>
+        </div>
+      </section>
+    </section>
+
+    <section id="markering-sektion" class="card marked-section reveal" aria-labelledby="marked-title" hidden>
+      <div class="card-topline"><div><div class="eyebrow small">SE DET I TEKSTEN</div><h2 id="marked-title">Her finder vi mønstrene</h2></div><label class="switch-label"><input id="vis-markeringer" type="checkbox" checked><span>Vis markeringer</span></label></div>
+      <div id="markering-filtre" class="filter-row" role="group" aria-label="Filtrér tekstmarkeringer"></div>
+      <p class="small-note">Hold markøren over en markering, tryk på den, eller brug Tab for at læse forklaringen.</p>
+      <div id="markeret-tekst" class="marked-text" aria-label="Analyseret tekst med forklarlige markeringer"></div>
+      <p id="markering-note" class="small-note"></p>
+    </section>
+
+    <section id="menneskeligt" class="writing-section reveal" aria-labelledby="writing-title">
+      <div class="section-intro"><div class="eyebrow">MERE KLARHED. MERE DIG.</div><h2 id="writing-title">Gør det mere menneskeligt.</h2><p>Giv sproget plads til din egen stemme. Forslagene følger tekstens sprog og bygger på det, du faktisk har skrevet.</p></div>
+      <div class="writing-grid">
+        <section class="card suggestions-card" aria-labelledby="suggestions-title"><div class="card-topline"><h3 id="suggestions-title">Små ændringer. Mere naturligt sprog.</h3><span class="icon-tile" aria-hidden="true">↗</span></div><div id="skriveforslag"><p class="muted">Analysér en tekst for at få konkrete forslag til netop dine sætninger.</p></div><button id="humaniser" type="button" class="secondary-button" disabled><span aria-hidden="true">✦</span> Humaniser forslag</button><p class="small-note">Regelbaserede redigeringsforslag. Læs dem igennem: betydning og grammatik kan kræve din rettelse. De garanterer ikke en bestemt score.</p></section>
+        <section class="card cleanup-card" aria-labelledby="cleanup-title"><div class="card-topline"><h3 id="cleanup-title">En renere tekst.</h3><span class="icon-tile" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m15 3 6 6-11 11H4v-6L15 3Z"/><path d="m11 7 6 6M4 20h16"/></svg></span></div><p class="muted">Fjern usynlige formateringstegn, og normaliser mellemrum, citationstegn og tankestreger.</p><div class="cleanup-note"><strong>Skjulte tegn er ikke AI-bevis.</strong><p>De kommer også fra Word, hjemmesider og kopiering. De giver derfor <strong>0 point</strong> i AI-scoren. Rensning fjerner ikke statistiske AI-vandmærker.</p></div><div class="cleanup-actions"><button id="rens" type="button" class="secondary-button" disabled>Fjern skjulte AI-tegn</button><button id="kopier" type="button" class="quiet-button" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M15 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3"/></svg>Kopiér renset tekst</button><button id="fortryd-rens" type="button" class="text-button" hidden>Fortryd rensning</button></div><p id="rens-status" class="small-note" role="status"></p></section>
+      </div>
+      <section id="omskrivninger" class="card rewrites-card" aria-labelledby="rewrites-title" hidden><div class="card-topline"><div><div class="eyebrow small">DU VÆLGER SELV</div><h3 id="rewrites-title">Forslag før og efter</h3></div><button id="luk-forslag" type="button" class="quiet-button">Luk forslag</button></div><div id="omskrivning-liste"></div></section>
+    </section>
+
+    <section id="baggrund" class="knowledge-section reveal" aria-labelledby="knowledge-title">
+      <div class="section-intro"><div class="eyebrow">FORSTÅ VURDERINGEN</div><h2 id="knowledge-title">Hvorfor ligner det AI?</h2><p>Et sprogligt mønster fortæller noget om formen.<br>Det fortæller ikke med sikkerhed, hvem der har skrevet teksten.</p></div>
+      <div class="knowledge-grid">
+        <article class="card knowledge-card"><div class="knowledge-number">01</div><h3>Sprogmodeller finder mønstre.</h3><p>En sprogmodel vælger tekstbidder ud fra sammenhængen. Resultatet kan have faste vendinger og en jævn struktur. Mennesker kan skrive på samme måde, og AI kan også skrive varieret.</p></article>
+        <article class="card knowledge-card"><div class="knowledge-number">02</div><h3>Perplexity: hvor overraskende?</h3><p>Perplexity måler, hvor uventet en tekst er for en bestemt sprogmodel. Her bruger vi kun ordvariation som en enkel proxy. <strong>Appen beregner ikke ægte perplexity.</strong></p></article>
+        <article class="card knowledge-card"><div class="knowledge-number">03</div><h3>Burstiness: sprogets rytme.</h3><p>Korte sætninger. Og nogle lidt længere. Den variation kaldes ofte burstiness. Vi måler spredningen i sætningslængde. Jævne længder kan også være et helt bevidst stilvalg.</p></article>
+      </div>
+      <div class="card limitations"><div><span class="eyebrow small">BRUG RESULTATET MED OMTANKE</span><h3>Ingen detektor er 100 % sikker.</h3><p>En høj score kan ramme en menneskeskrevet tekst. En lav score kan overse AI-tekst. Genren, tekstens længde og sproget påvirker resultatet. Brug kladder, kilder, versionshistorik og en samtale om indholdet som supplerende dokumentation.</p></div><div class="language-note"><strong>En note om sprogene</strong><p>AI-detektion er generelt bedst undersøgt og trænet på engelsk. Dansk og tysk kræver ekstra forbehold. <strong>Denne apps nøjagtighed er ikke valideret på nogen af sprogene</strong>, så vi kan ikke love, at dens engelske score er mere præcis.</p></div></div>
+      <details class="card method-details"><summary>Metode, privatliv og kilder</summary><div class="method-content"><p><strong>Hvad scoren betyder:</strong> 24 grundpoint plus vægtede sproglige træk. Under 35 vises som lav, 35–64 som middel og 65–100 som høj sandsynlighed. Betegnelserne er visningskategorier; de er ikke statistisk kalibrerede sandsynligheder.</p><p><strong>Begrænset grammatikanalyse:</strong> Appen kan kontrollere store begyndelsesbogstaver, sluttegn og enkelte gentagelser. Den kan ikke afgøre, om grammatikken er perfekt. Det signal har derfor lav vægt.</p><p><strong>Tysk:</strong> Sammensatte ord tæller som selvstændige ord. Ordets længde og antallet af stavelser bruges ikke som tegn på lav variation.</p><p><strong>Privatliv:</strong> Ingen API, ingen eksterne skrifttyper, ingen analyseværktøjer, ingen cookies og ingen lagring af din tekst. Teksten forlader ikke browseren. Selve webhosten modtager almindelige sideforespørgsler, men ikke teksten i feltet.</p><p><strong>Typografisk rensning:</strong> Usynlige tegn og typografi siger ikke i sig selv noget om forfatterskab. Emoji-sammenføjninger bevares. Rensning er ikke en metode til at fjerne statistiske vandmærker.</p><p><strong>Læs mere:</strong> <a href="https://aclanthology.org/2025.findings-naacl.271/" target="_blank" rel="noreferrer noopener">Undersøgelse af AI-detektorers begrænsninger ↗</a> · <a href="https://aclanthology.org/2023.emnlp-main.616/" target="_blank" rel="noreferrer noopener">MULTITuDE: flersproget AI-detektion ↗</a></p><p>De konkrete vægte, lister og regler er beskrevet i README.md og kan læses i kildekoden.</p></div></details>
+    </section>
+  </main>
+  <footer class="wrap site-footer"><a class="brand" href="#top">AI-tjek<span class="beta">BETA</span></a><p>Bygget til nysgerrighed. Et estimat, ikke et bevis.</p><span>100 % lokal tekstanalyse</span></footer>
+  <div id="tooltip" class="tooltip" role="tooltip" hidden></div>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <div id="analyse-status" class="sr-only" role="status" aria-live="polite"></div>
+  <noscript><p class="noscript-note">Slå JavaScript til for at bruge AI-tjek. Analysen kører kun i din browser.</p></noscript>
+</body>
+</html>
