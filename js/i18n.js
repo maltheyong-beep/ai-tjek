@@ -64,6 +64,7 @@ export const UI = {
 };
 
 export const COPY = {
+  combinationError: 'Denne kombination af ændringer giver en tom tekst eller mere end 5.000 ord. Brug Fortryd alle, eller vælg en anden ændring først.',
   emptyError: 'Indsæt en tekst med mindst ét ord.',
   limitError: (words, extra) => `Teksten indeholder ${words.toLocaleString('da-DK')} ord. Fjern ${extra.toLocaleString('da-DK')} ord for at komme ned på maks. 5.000.`,
   count: n => `${n.toLocaleString('da-DK')} / 5.000 ord`,
