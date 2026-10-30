@@ -6,6 +6,7 @@ import { announce, haptic, toast, error, copyText } from './ui-feedback.js';
 import { HUMANIZE_API_URL } from './config.js';
 import { UI, COPY, LANGUAGES } from './i18n.js';
 import { countWords, MAX_WORDS, validateText, detectLanguage, resolveLanguage } from './utils.js';
+import { getAnalysisWeights } from './analysis-weights.js';
 import { analyzeText } from './analyze.js';
 import { getFinalText, toggleChange, addTypographyChanges, cleanTextSafely } from './humanize-local.js';
 import { readDraft, saveDraft } from './storage.js';
@@ -141,6 +142,7 @@ async function run() {
   if (session.busy) return;
   try {
     validateText(state.text);
+    getAnalysisWeights();
     error();
     if (state.mode === 'human') session.activeRequest = new AbortController();
     setBusy(true, state.mode === 'human' ? UI.busyHuman : UI.busyAnalysis, state.mode === 'human');
@@ -320,3 +322,10 @@ if (saved.data) {
 } else renderMode();
 $('draft-status').textContent = !session.storageOK ? UI.draftFailed : state.text ? UI.draftSaved : UI.draftEmpty;
 installReveals();
+
+// En filfejl er en konfigurationsfejl, ikke en forkert kladde.
+try {
+  getAnalysisWeights();
+} catch (failure) {
+  error(failure.message);
+}
