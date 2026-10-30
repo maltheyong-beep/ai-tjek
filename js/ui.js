@@ -114,7 +114,8 @@ function focusChange(id) {
 function undoOne(id, enabled) {
   if (!state.job || busy) return;
   const index = state.job.changes.findIndex(change => change.id === id); if (index < 0) return;
-  state.job = toggleChange(state.job, id, enabled); tooltips.hide();
+  try { state.job = toggleChange(state.job, id, enabled); } catch { error(COPY.combinationError); toast(COPY.combinationError); return; }
+  error(); tooltips.hide();
   renderHuman(state.job, { view: state.view }); persist(); focusChange(id);
   announce(COPY.toggled(index + 1, state.job.changes[index].enabled));
 }
