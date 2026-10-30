@@ -69,7 +69,7 @@ AI-omskrivning sender tekst og beskyttede fagudtryk til din Cloudflare Worker og
 
 Betydning og fakta kan ikke garanteres af en prompt eller af fragmentkontrol. Tysk navneordsbeskyttelse er konservativ, og automatisk sprogvalg er usikkert for korte/blandede tekster. Store gennemgribende omskrivninger kan samles i større diff-områder for at holde telefonen hurtig. Tonevalg virker kun med AI, og lokal fallback omskriver mindre.
 
-AI-scoren er **et estimat, ikke bevis** eller en kalibreret sandsynlighed. 24 grundpoint plus håndvægtede signaler afgrænses til 0–100. Under 35 er lav, 35–64 middel og fra 65 høj. Ordvariation er ikke ægte perplexity; der er ingen fuld grammatikkontrol. Lavere score beviser ikke menneskeligt forfatterskab. Nøjagtighed er ikke valideret på noget sprog; AI-detektion er generelt bedst undersøgt på engelsk og mere usikker på dansk/tysk. Brug egne tekster og følg skolens/arbejdspladsens regler.
+AI-scoren er **et estimat, ikke bevis** eller en kalibreret sandsynlighed. Vægte, grundindeks, fælles fraseloft og spændbredder ligger i `data/vaegte.json`. Et internt indeks vises som et afrundet spænd, ikke som én præcis procent. Spændet er et håndvalgt følsomhedsspænd og ikke et statistisk konfidensinterval. Under 80 ord vises “For kort til en sikker vurdering”. Ordvariation er ikke ægte perplexity; der er ingen fuld grammatikkontrol. Lavere score beviser ikke menneskeligt forfatterskab. Nøjagtighed er ikke valideret på noget sprog; AI-detektion er generelt bedst undersøgt på engelsk og mere usikker på dansk/tysk. Brug egne tekster og følg skolens/arbejdspladsens regler.
 
 Manifestet giver hjemmeskærmsikon og standalone-visning, men der er ingen service worker eller garanteret offline-cache. Browserens mobilvisning er ikke en fysisk iPhone-/Android-test.
 
@@ -89,3 +89,12 @@ npm run format:check
 Prettier og ESLint er kun til udvikling. Frontenden hostes stadig direkte på GitHub Pages uden build. Tilføj et sprog i `js/texts/language-*.js`, registrér det i `js/texts/languages.js` og følg sprogtjeklisten ovenfor. Nye genrer skal i næste godkendte fase have egne JSON-regler i `data/`, tests og eksplicit UI-tilkobling; de er ikke implementeret i oprydningen.
 
 Faglig kilde til kommende genre-/taleværktøjer: [Indidansk](https://indidansk.dk/). Skriv egne regler og spørgsmål; kopier ikke sidens tekster, tabeller eller billeder.
+
+## Detektorens fase 2
+
+- `data/vaegte.json` er eneste kilde til den endelige vægtning. `js/analysis-weights.js` indlæser og validerer den; ingen hemmeligheder eller brugertext sendes med filforespørgslen. Hvis filen ikke kan læses, vises en fejl ved analyse i stedet for at bruge tavse reservevægte.
+- `js/analyze.js` måler de lokale signaler. `js/analysis-scoring.js` vægter, begrænser korrelerede fraser og beregner et bredt spænd. Pæn tegnsætning, manglende jeg-form og usynlige tegn giver ingen positive AI-point. Ordets længde indgår ikke i scoren, heller ikke for danske/tyske sammensætninger.
+- `js/analysis-units.js` beregner delmålinger på originalens sætninger og afsnit med samme valgte sprog. Afsnit følger blanklinjer. Korte deltekster markeres som usikre; de får ikke en præcis procentvisning. `js/analysis-unit-view.js` viser delmålingerne i portioner på 20 ved åbning.
+- DA/DE får bredere spænd end EN som en forsigtig designregel, ikke som dokumenteret nøjagtighed. Få sætninger, usikkert sproggæt og uenighed mellem længere afsnit udvider spændet. Overlappende før/efter-spænd behandles ikke som en sikker forbedring.
+- Ingen reel perplexity, serverlogprobs, betalte detektorer eller eksterne tekstkald til analyse. Designændringerne er begrænset til intervaltekst og et foldbart afsnit i samme eksisterende kort.
+- Dette er **ikke empirisk kalibreret**. Prøverne i de automatiske tests er funktionelle eksempler, ikke et mærket korpus og ikke dokumentation for færre falske positive. Kalibrering kræver stadig dine egne tekster i den senere fase.
