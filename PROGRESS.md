@@ -6,7 +6,7 @@ Kun én fase ad gangen. Stop efter fase 1 og vent på **næste**. De to ønskede
 
 ## Oprydning, fase 1
 
-- Status: gennemført kodeoprydning; 61 tests består efter hvert oprydningstrin; ESLint og Prettier består. Før/efter er kontrolleret i browseren ved faktiske bredder 360, 390, 768 og 1280 px. Publicering til separat fasegren er i gang.
+- Status: gennemført kodeoprydning; 61 tests består efter hvert oprydningstrin; ESLint og Prettier består. Før/efter er kontrolleret i browseren ved faktiske bredder 360, 390, 768 og 1280 px. Fase 1 er afsluttet og flettet til main i commit b7ac3c3. Stop her og vent på næste.
 - Udgangspunkt: offentlig version 82640cc. Udseende, score og handlinger bevares.
 - Fjernet: ubrugte `makeSuggestions` og dets 18 tipfelter, farven `--purple` i to temaer, et ubrugt test-import og en gentaget `min-width`-regel. `pinned`-tilstanden var altid falsk og er forenklet væk.
 - Flyttet: sproglag til `js/texts/` med `js/i18n.js` som fælles indgang; CSS til `css/components/` i præcis samme rækkefølge; UI-hændelser og feedback til egne moduler; fælles grænser til `js/constants.js`.
