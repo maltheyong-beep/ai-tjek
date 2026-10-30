@@ -1,32 +1,152 @@
 /* Korte bevægelser viser status uden at forsinke arbejdet. */
-button, a, summary { transition: background var(--motion-fast), color var(--motion-fast), box-shadow var(--motion-fast), transform var(--motion-fast); }
-button:hover:not(:disabled) { transform: translateY(-1px); }
-button:active:not(:disabled) { transform: scale(.97); }
-.card { transition: box-shadow var(--motion), border-color var(--motion), transform var(--motion); }
-.card:hover { box-shadow: var(--shadow-hover); }
-.knowledge-card:hover { transform: translateY(-2px); }
-.reveal.pending { opacity: 0; transform: translateY(var(--space-4)); }
-.reveal.visible { animation: fade-slide var(--motion-slow) var(--ease) both; }
-.panel-enter { animation: fade-slide var(--motion) var(--ease) both; }
-.change-mark.new-change { animation: change-in var(--motion) var(--ease) both; animation-delay: var(--stagger, 0ms); }
-.tooltip:not([hidden]) { animation: tooltip-in 220ms var(--spring) both; }
-.toast:not([hidden]) { animation: fade-slide var(--motion) var(--spring) both; }
-.check-icon path, .done-check path { stroke-dasharray: 30; stroke-dashoffset: 0; animation: draw-check var(--motion) var(--ease) both; }
-.copy-button.copied { box-shadow: 0 0 0 2px var(--split-edge); }
-.spinner { animation: spin 360ms linear infinite; }
-.gauge .progress { transition: color var(--motion); }
-@keyframes fade-slide { from { opacity: 0; transform: translateY(var(--space-3)); } to { opacity: 1; transform: translateY(0); } }
-@keyframes change-in { from { opacity: 0; box-shadow: inset 0 -1px var(--surface); } to { opacity: 1; box-shadow: inset 0 -2px var(--change-edge); } }
-@keyframes tooltip-in { from { opacity: 0; transform: translateY(6px) scale(.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
-@keyframes draw-check { from { stroke-dashoffset: 30; } to { stroke-dashoffset: 0; } }
-@keyframes spin { to { transform: rotate(360deg); } }
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after { animation: none !important; transition: none !important; }
-  .reveal.pending { opacity: 1; transform: none; }
-  button:hover, button:active, .knowledge-card:hover { transform: none !important; }
+button,
+a,
+summary {
+  transition:
+    background var(--motion-fast),
+    color var(--motion-fast),
+    box-shadow var(--motion-fast),
+    transform var(--motion-fast);
 }
-.skeleton-lines i { animation: skeleton 360ms var(--ease) infinite alternate; }
-.change-sheet[open] { animation: sheet-in 320ms var(--spring) both; }
-@keyframes skeleton { from { background-position: 0 0; opacity: .65; } to { background-position: 100% 0; opacity: 1; } }
-@keyframes sheet-in { from { opacity: 0; transform: translateY(var(--space-8)); } to { opacity: 1; transform: translateY(0); } }
+button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+.card {
+  transition:
+    box-shadow var(--motion),
+    border-color var(--motion),
+    transform var(--motion);
+}
+.card:hover {
+  box-shadow: var(--shadow-hover);
+}
+.knowledge-card:hover {
+  transform: translateY(-2px);
+}
+.reveal.pending {
+  opacity: 0;
+  transform: translateY(var(--space-4));
+}
+.reveal.visible {
+  animation: fade-slide var(--motion-slow) var(--ease) both;
+}
+.panel-enter {
+  animation: fade-slide var(--motion) var(--ease) both;
+}
+.change-mark.new-change {
+  animation: change-in var(--motion) var(--ease) both;
+  animation-delay: var(--stagger, 0ms);
+}
+.tooltip:not([hidden]) {
+  animation: tooltip-in 220ms var(--spring) both;
+}
+.toast:not([hidden]) {
+  animation: fade-slide var(--motion) var(--spring) both;
+}
+.check-icon path,
+.done-check path {
+  stroke-dasharray: 30;
+  stroke-dashoffset: 0;
+  animation: draw-check var(--motion) var(--ease) both;
+}
+.copy-button.copied {
+  box-shadow: 0 0 0 2px var(--split-edge);
+}
+.spinner {
+  animation: spin 360ms linear infinite;
+}
+.gauge .progress {
+  transition: color var(--motion);
+}
+@keyframes fade-slide {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-3));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes change-in {
+  from {
+    opacity: 0;
+    box-shadow: inset 0 -1px var(--surface);
+  }
+  to {
+    opacity: 1;
+    box-shadow: inset 0 -2px var(--change-edge);
+  }
+}
+@keyframes tooltip-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes draw-check {
+  from {
+    stroke-dashoffset: 30;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .reveal.pending {
+    opacity: 1;
+    transform: none;
+  }
+  button:hover,
+  button:active,
+  .knowledge-card:hover {
+    transform: none !important;
+  }
+}
+.skeleton-lines i {
+  animation: skeleton 360ms var(--ease) infinite alternate;
+}
+.change-sheet[open] {
+  animation: sheet-in 320ms var(--spring) both;
+}
+@keyframes skeleton {
+  from {
+    background-position: 0 0;
+    opacity: 0.65;
+  }
+  to {
+    background-position: 100% 0;
+    opacity: 1;
+  }
+}
+@keyframes sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-8));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
