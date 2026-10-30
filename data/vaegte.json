@@ -1,0 +1,85 @@
+{
+  "version": "lokal-2-ukalibreret",
+  "baseline": 20,
+  "minimumWords": 80,
+  "maximumScore": 100,
+  "levels": {
+    "medium": 35,
+    "high": 65
+  },
+  "signals": {
+    "rhythm": {
+      "positive": 0.8,
+      "negative": 0.8,
+      "family": "rhythm"
+    },
+    "starts": {
+      "positive": 0.75,
+      "negative": 0.75,
+      "family": "repetition"
+    },
+    "transitions": {
+      "positive": 0.65,
+      "negative": 0.65,
+      "family": "phrases"
+    },
+    "cliches": {
+      "positive": 0.65,
+      "negative": 0.65,
+      "family": "phrases"
+    },
+    "voice": {
+      "positive": 0,
+      "negative": 0.5,
+      "family": "voice"
+    },
+    "polish": {
+      "positive": 0,
+      "negative": 0,
+      "family": "polish"
+    },
+    "style": {
+      "positive": 0.6,
+      "negative": 0.6,
+      "family": "style"
+    },
+    "vocabulary": {
+      "positive": 0.8,
+      "negative": 0.8,
+      "family": "vocabulary"
+    },
+    "unicode": {
+      "positive": 0,
+      "negative": 0,
+      "family": "unicode"
+    }
+  },
+  "familyCaps": {
+    "phrases": 18
+  },
+  "highScoreGate": {
+    "minimumPositiveFamilies": 4,
+    "minimumFamilyPoints": 4
+  },
+  "uncertainty": {
+    "halfWidth": {
+      "da": 24,
+      "de": 24,
+      "en": 18
+    },
+    "fewSentencesBelow": 6,
+    "fewSentencesExtra": 8,
+    "uncertainLanguageExtra": 10,
+    "blockDisagreementFactor": 0.25,
+    "maximumHalfWidth": 45,
+    "roundingStep": 5
+  },
+  "features": {
+    "perplexity": false,
+    "compoundWordLengthPenalty": false
+  },
+  "calibration": {
+    "validated": false,
+    "source": "Håndvalgte konservative vægte; afventer brugerens mærkede tekster."
+  }
+}
