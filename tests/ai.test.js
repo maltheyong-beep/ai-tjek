@@ -65,3 +65,13 @@ test('AI-validering afviser ændrede navne, tal, citater og negationer', () => {
   const input = {text:'Anna skriver ikke 42 ord og siger "hej".',language:'da',protectedTerms:''};
   for (const text of ['Anne skriver ikke 42 ord og siger "hej".','Anna skriver ikke 43 ord og siger "hej".','Anna skriver 42 ord og siger "hej".','Anna skriver ikke 42 ord og siger "farvel".']) assert.throws(()=>validateAiResponse({text,changes:[]},input),/INVALID_OUTPUT/);
 });
+
+test('Individuel fortryd må ikke give en tekst over ordgrænsen', () => {
+  const original = 'ord '.repeat(5000).trim();
+  const changes = [
+    { id:'wording-0-0', start:0, end:0, before:'', after:'nyt ', type:'wording', reason:'Test', enabled:true },
+    { id:'wording-4-8', start:4, end:8, before:original.slice(4,8), after:'', type:'wording', reason:'Test', enabled:true }
+  ];
+  const job = {original,changes}; assert.throws(()=>toggleChange(job,changes[1].id,false),/5.000/);
+  assert.equal(getFinalText(job).split(/\s+/).length,5000);
+});
