@@ -148,7 +148,8 @@ export function cleanTextSafely(original, options = {}) {
   return addTypographyChanges(emptyJob);
 }
 export function toggleChange(job, id, enabled) {
-  return { ...job, changes: job.changes.map(change => change.id === id ? { ...change, enabled: enabled ?? !change.enabled } : change) };
+  const updated = { ...job, changes: job.changes.map(change => change.id === id ? { ...change, enabled: enabled ?? !change.enabled } : change) };
+  validateText(getFinalText(updated)); return updated;
 }
 export function toggleAllChanges(job, enabled) { return { ...job, changes: job.changes.map(change => ({ ...change, enabled })) }; }
 
