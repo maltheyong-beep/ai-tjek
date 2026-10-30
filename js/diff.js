@@ -77,8 +77,8 @@ function align(a, b, offsetA = 0, offsetB = 0, depth = 0) {
 function edit(original, replacement, start, end, outStart, outEnd) {
   let before = original.slice(start, end), after = replacement.slice(outStart, outEnd);
   const a = Array.from(before), b = Array.from(after); let prefix = 0, suffix = 0;
-  while (prefix < Math.min(a.length, b.length) && a[prefix] === b[prefix]) prefix++;
-  while (suffix < Math.min(a.length, b.length) - prefix && a[a.length - 1 - suffix] === b[b.length - 1 - suffix]) suffix++;
+  while (prefix < Math.min(a.length, b.length) && a[prefix] === b[prefix] && /\s/u.test(a[prefix])) prefix++;
+  while (suffix < Math.min(a.length, b.length) - prefix && a[a.length - 1 - suffix] === b[b.length - 1 - suffix] && /\s/u.test(a[a.length - 1 - suffix])) suffix++;
   start += a.slice(0, prefix).join('').length; end -= a.slice(a.length - suffix).join('').length;
   before = original.slice(start, end); after = b.slice(prefix, b.length - suffix).join('');
   return before === after ? null : { start, end, before, after };
