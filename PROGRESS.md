@@ -6,13 +6,13 @@ Kun én fase ad gangen. Stop efter fase 1 og vent på **næste**. De to ønskede
 
 ## Oprydning, fase 1
 
-- Status: gennemført kodeoprydning; slutkontrol og publicering registreres nedenfor.
+- Status: gennemført kodeoprydning; 61 tests består efter hvert oprydningstrin; ESLint og Prettier består. Før/efter er kontrolleret i browseren ved faktiske bredder 360, 390, 768 og 1280 px. Publicering til separat fasegren er i gang.
 - Udgangspunkt: offentlig version 82640cc. Udseende, score og handlinger bevares.
 - Fjernet: ubrugte `makeSuggestions` og dets 18 tipfelter, farven `--purple` i to temaer, et ubrugt test-import og en gentaget `min-width`-regel. `pinned`-tilstanden var altid falsk og er forenklet væk.
 - Flyttet: sproglag til `js/texts/` med `js/i18n.js` som fælles indgang; CSS til `css/components/` i præcis samme rækkefølge; UI-hændelser og feedback til egne moduler; fælles grænser til `js/constants.js`.
 - Prettier, ESLint og EditorConfig er kun udviklingsværktøjer. Ingen build-step eller runtime-afhængigheder er tilføjet.
 - Beholdt ved tvivl: SVG-ikon (dokumenteret ikonmappe), alle tests og eksempler, Worker-filer, `.nojekyll`, manifest og sprogdata. Intet genre-/tale-stubmodul er oprettet: de ville være ubrugt kode før fase 2/4.
-- Størrelse: næsten alle moduler er under ca. 300 linjer. Den statiske HTML-indgang er længere; den bevares samlet for at undgå ny runtime-rendering. UI-koordinatoren er tæt på grænsen.
+- Størrelse: næsten alle moduler er under ca. 300 linjer. Den statiske HTML-indgang er længere; den bevares samlet for at undgå ny runtime-rendering. UI-koordinatoren er ca. 320 linjer; låsefilen er automatisk genereret og deles ikke op.
 - CSS-afstande er fortsat overvejende eksisterende variabler. Breakpoints og enkelte geometrimål er beholdt for ikke at indføre bred ændring af styling i denne fase.
 
 ## Detektor, fase 1 — vurdering (8 linjer)
