@@ -74,3 +74,18 @@ AI-scoren er **et estimat, ikke bevis** eller en kalibreret sandsynlighed. 24 gr
 Manifestet giver hjemmeskærmsikon og standalone-visning, men der er ingen service worker eller garanteret offline-cache. Browserens mobilvisning er ikke en fysisk iPhone-/Android-test.
 
 Baggrund: [AI-detektorers begrænsninger](https://aclanthology.org/2025.findings-naacl.271/) · [MULTITuDE](https://aclanthology.org/2023.emnlp-main.616/).
+
+## Udvikling og oprydning
+
+Se [PROGRESS.md](PROGRESS.md) før næste fase og [docs/OVERBLIK.md](docs/OVERBLIK.md) for flow og en “vil du ændre X → find Y”-oversigt. Sproglisterne ligger nu i `js/texts/`, UI-hændelser i `js/ui-events.js`, status/kopiering i `js/ui-feedback.js` og komponentstil i `css/components/`. De oprindelige indgange geneksporterer/indlæser delene.
+
+```sh
+npm ci
+npm test
+npm run lint
+npm run format:check
+```
+
+Prettier og ESLint er kun til udvikling. Frontenden hostes stadig direkte på GitHub Pages uden build. Tilføj et sprog i `js/texts/language-*.js`, registrér det i `js/texts/languages.js` og følg sprogtjeklisten ovenfor. Nye genrer skal i næste godkendte fase have egne JSON-regler i `data/`, tests og eksplicit UI-tilkobling; de er ikke implementeret i oprydningen.
+
+Faglig kilde til kommende genre-/taleværktøjer: [Indidansk](https://indidansk.dk/). Skriv egne regler og spørgsmål; kopier ikke sidens tekster, tabeller eller billeder.
