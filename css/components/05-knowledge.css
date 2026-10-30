@@ -1,0 +1,183 @@
+/* Komponentregler i oprindelig kaskaderækkefølge. */
+@media (max-width: 380px) {
+  .analysis-score {
+    gap: var(--space-2);
+  }
+  .large-gauge {
+    width: 112px;
+    height: 112px;
+  }
+  .large-gauge .gauge-number {
+    font-size: 34px;
+  }
+  .analysis-score h3 {
+    font-size: 18px;
+  }
+  .card-heading .small-pill {
+    font-size: 11px;
+  }
+  .heading-group h2 {
+    font-size: 17px;
+  }
+  .type-chip {
+    font-size: 11px;
+  }
+}
+/* Handlinger og dialog ligger frit i dokumentet, så glaskort ikke indfanger position: fixed. */
+.primary-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-left: auto;
+}
+.tone-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--space-4);
+  gap: var(--space-3);
+}
+.tone-field label {
+  font-size: var(--font-sm);
+  font-weight: 600;
+}
+#server-note,
+.own-text-note,
+#score-not-lower,
+#coarse-note {
+  margin-top: var(--space-3);
+}
+[data-type='wording'] {
+  --change-bg: var(--wording-bg);
+  --change-edge: var(--wording-edge);
+}
+.ai-skeleton {
+  padding-block: var(--space-8);
+}
+.skeleton-lines {
+  display: grid;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+.skeleton-lines i {
+  display: block;
+  height: var(--space-4);
+  border-radius: var(--radius-pill);
+  background: linear-gradient(100deg, var(--soft), var(--line), var(--soft));
+  background-size: 200% 100%;
+}
+.skeleton-lines i:nth-child(even) {
+  width: 75%;
+}
+.change-sheet {
+  width: calc(100% - var(--space-8));
+  max-width: 580px;
+  max-height: 85dvh;
+  border: var(--border) solid var(--line);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  color: var(--ink);
+  background: var(--surface);
+  box-shadow: var(--shadow-hover);
+  overscroll-behavior: contain;
+}
+.change-sheet::backdrop {
+  background: var(--backdrop);
+  backdrop-filter: blur(3px);
+}
+.sheet-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.sheet-heading h2 {
+  font-size: 22px;
+}
+#sheet-close {
+  font-size: 25px;
+}
+.sheet-content {
+  overflow: auto;
+  max-height: 52dvh;
+  overscroll-behavior: contain;
+  padding-block: var(--space-3);
+}
+.sheet-content p {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin-block: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--soft);
+  font-size: 16px;
+}
+.sheet-content strong {
+  display: block;
+  font-size: var(--font-xs);
+  color: var(--muted);
+  margin-bottom: var(--space-1);
+}
+.sheet-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  border-top: var(--border) solid var(--line);
+  padding-top: var(--space-4);
+}
+.sheet-actions .primary-button {
+  min-width: var(--target);
+}
+input,
+select,
+textarea,
+#protected-terms {
+  font-size: 16px;
+}
+@media (max-width: 699px) {
+  body {
+    padding-bottom: calc(var(--space-16) + var(--space-6) + env(safe-area-inset-bottom, 0px));
+  }
+  .site-header {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .primary-actions {
+    position: fixed;
+    z-index: 30;
+    bottom: var(--keyboard-inset, 0px);
+    left: 0;
+    right: 0;
+    background: var(--header-bg);
+    border-top: var(--border) solid var(--line);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: var(--space-3) max(var(--space-4), env(safe-area-inset-right, 0px))
+      max(var(--space-3), env(safe-area-inset-bottom, 0px)) max(var(--space-4), env(safe-area-inset-left, 0px));
+  }
+  .primary-actions .primary-button {
+    flex: 1;
+    min-width: 0;
+  }
+  .primary-actions .secondary-button {
+    flex-shrink: 0;
+  }
+  .change-sheet {
+    margin: auto 0 var(--keyboard-inset, 0px);
+    width: 100%;
+    max-width: none;
+    max-height: 85dvh;
+    border-bottom: 0;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    padding: var(--space-4) max(var(--space-5), env(safe-area-inset-right, 0px))
+      max(var(--space-5), env(safe-area-inset-bottom, 0px)) max(var(--space-5), env(safe-area-inset-left, 0px));
+  }
+  .toast {
+    bottom: calc(var(--space-16) + var(--space-5) + env(safe-area-inset-bottom, 0px) + var(--keyboard-inset, 0px));
+  }
+  .sheet-content {
+    max-height: 48dvh;
+  }
+  .editor-actions {
+    margin-top: var(--space-3);
+  }
+}
