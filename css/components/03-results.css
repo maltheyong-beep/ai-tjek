@@ -1,0 +1,280 @@
+/* Komponentregler i oprindelig kaskaderækkefølge. */
+[data-type='typography'] {
+  --change-bg: var(--typography-bg);
+  --change-edge: var(--typography-edge);
+}
+#protected-count,
+#skipped-note {
+  margin-top: var(--space-3);
+}
+.score-pair {
+  display: grid;
+  grid-template-columns: 1fr var(--space-8) 1fr;
+  align-items: center;
+  margin-top: var(--space-5);
+  border-block: var(--border) solid var(--line);
+  padding-block: var(--space-4);
+  text-align: center;
+}
+.score-pair p {
+  font-size: var(--font-xs);
+  color: var(--muted);
+  margin-bottom: var(--space-2);
+}
+.gauge {
+  position: relative;
+  color: var(--blue);
+  margin-inline: auto;
+  flex-shrink: 0;
+}
+.gauge svg {
+  width: 100%;
+  height: 100%;
+  stroke-width: 6;
+  transform: rotate(-90deg);
+}
+.gauge .track {
+  stroke: var(--soft);
+}
+.gauge .progress {
+  stroke: currentColor;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+}
+.gauge-number {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 2px;
+  position: absolute;
+  inset: 0;
+  padding-top: 28%;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.06em;
+  line-height: 1.4;
+}
+.gauge-number span {
+  font-size: 0.48em;
+  color: var(--muted);
+}
+.mini-gauge {
+  width: 92px;
+  height: 92px;
+}
+.mini-gauge .gauge-number {
+  font-size: 28px;
+}
+.large-gauge {
+  width: 140px;
+  height: 140px;
+}
+.large-gauge .gauge-number {
+  font-size: 42px;
+}
+.gauge[data-level='low'] {
+  color: var(--gauge-low);
+}
+.gauge[data-level='medium'] {
+  color: var(--gauge-medium);
+}
+.gauge[data-level='high'] {
+  color: var(--gauge-high);
+}
+.score-arrow {
+  color: var(--muted);
+  font-size: 24px;
+}
+.score-note {
+  margin-top: var(--space-3);
+}
+.analysis-score {
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+  margin-top: var(--space-6);
+}
+.analysis-score h3 {
+  margin-block: var(--space-2);
+  font-size: 21px;
+}
+.analysis-score .eyebrow {
+  font-size: 10px;
+}
+.analysis-score .hint {
+  font-size: var(--font-xs);
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  text-align: center;
+  gap: var(--space-2);
+  border-block: var(--border) solid var(--line);
+  margin-top: var(--space-5);
+  padding-block: var(--space-4);
+}
+.stats div {
+  display: flex;
+  flex-direction: column;
+}
+.stats strong {
+  font-size: 24px;
+}
+.stats span {
+  color: var(--muted);
+  font-size: 11px;
+}
+.small-heading {
+  font-size: var(--font-sm);
+  margin-top: var(--space-5);
+}
+.signal {
+  border-bottom: var(--border) solid var(--line);
+  padding-block: var(--space-3);
+}
+.signal-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  align-items: start;
+  font-size: var(--font-sm);
+  font-weight: 600;
+}
+.signal .hint {
+  margin-top: var(--space-1);
+}
+.point {
+  color: var(--muted);
+  font-size: var(--font-xs);
+  white-space: nowrap;
+}
+.point.up {
+  color: var(--amber);
+}
+.point.down {
+  color: var(--green);
+}
+.calculation {
+  margin-top: var(--space-3);
+  font-size: var(--font-xs);
+  color: var(--muted);
+}
+.calculation summary {
+  color: var(--blue);
+}
+.calculation li {
+  margin-block: var(--space-3);
+}
+.output-card {
+  margin-top: var(--space-5);
+  padding: var(--space-5);
+}
+.output-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+}
+.output-heading h2 {
+  font-size: 23px;
+  margin-top: var(--space-2);
+}
+.output-heading .eyebrow {
+  font-size: 10px;
+}
+.view-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-1);
+  padding: var(--space-1);
+  background: var(--soft);
+  border: var(--border) solid var(--line);
+  border-radius: var(--radius-sm);
+  width: 100%;
+}
+.view-tabs button {
+  min-height: var(--target);
+  min-width: 0;
+  padding: var(--space-2);
+  border: 0;
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  background: transparent;
+  font-size: var(--font-xs);
+}
+.view-tabs button[aria-pressed='true'] {
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+  font-weight: 600;
+}
+.legend {
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-3);
+}
+.document {
+  background: var(--surface);
+  border: var(--border) solid var(--line);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  font-size: 14px;
+  line-height: 2.15;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 620px;
+  overflow-y: auto;
+  min-height: 160px;
+  margin-top: var(--space-4);
+  scrollbar-width: thin;
+}
+.change-mark,
+.analysis-mark {
+  display: inline-block;
+  vertical-align: baseline;
+  text-align: start;
+  font: inherit;
+  line-height: 1.85;
+  color: var(--ink);
+  max-width: 100%;
+  min-width: var(--target);
+  min-height: var(--target);
+  border: 0;
+  border-radius: var(--space-1);
+  padding: var(--space-2) var(--space-1);
+  margin-block: 1px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  background: var(--change-bg, var(--filler-bg));
+  box-shadow: inset 0 -2px var(--change-edge, var(--filler-edge));
+  cursor: help;
+}
+.change-mark.is-undone {
+  background: var(--soft);
+  box-shadow: none;
+  text-decoration: underline dashed var(--muted);
+  color: var(--muted);
+}
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-6);
+  margin-top: var(--space-5);
+}
+.compare-label {
+  font-size: var(--font-sm);
+  color: var(--muted);
+  letter-spacing: 0;
+}
+.compare-grid .document {
+  margin-top: var(--space-2);
+}
+.output-actions {
+  border-top: var(--border) solid var(--line);
+  padding-top: var(--space-4);
+}
+.review-details {
+  margin-top: var(--space-5);
+  border-top: var(--border) solid var(--line);
+}
