@@ -1,80 +1,433 @@
 <!doctype html>
 <html lang="da">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
-  <meta name="color-scheme" content="light dark">
-  <meta name="description" content="AI-tjek: lokal tekstanalyse og AI-omskrivning på dansk, tysk og engelsk. Se ændringerne og fortryd dem enkeltvis.">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://*.workers.dev; object-src 'none'; base-uri 'none'; form-action 'none'">
-  <meta name="theme-color" content="#0064d2">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="AI-tjek">
-  <link rel="manifest" href="./manifest.json">
-  <link rel="apple-touch-icon" href="./icons/icon-192.png">
-  <title>AI-tjek — Humanisér tekst med fuld kontrol</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%230067d6'/%3E%3Cpath d='m17 33 10 10 21-23' fill='none' stroke='white' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="./css/base.css">
-  <link rel="stylesheet" href="./css/components.css">
-  <link rel="stylesheet" href="./css/animations.css">
-  <script type="module" src="./js/ui.js"></script>
-</head>
-<body>
-  <a class="skip-link" href="#text-input" data-i18n="skip"></a>
-  <div class="ambient" aria-hidden="true"></div>
-  <header class="site-header"><nav class="wrap navigation" data-aria="navAria">
-    <a href="#top" class="brand"><span class="brand-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 12 4 4 8-9"/></svg></span><span data-i18n="brand"></span><span class="version" data-i18n="beta"></span></a>
-    <a href="#about" class="nav-help" data-i18n="navHelp"></a><span class="local-pill"><i aria-hidden="true"></i><span data-i18n="local"></span></span>
-  </nav></header>
-  <main id="top" class="wrap">
-    <section class="hero reveal"><p class="eyebrow" data-i18n="eyebrow"></p><h1 data-i18n="heroTitle"></h1><p class="hero-description" data-i18n="heroDescription"></p></section>
-    <div class="mode-tabs" role="tablist" data-aria="modeAria">
-      <button id="tab-human" type="button" role="tab" aria-selected="true" aria-controls="work-panel" data-mode="human"><span aria-hidden="true">✦</span><span data-i18n="humanTab"></span></button>
-      <button id="tab-analysis" type="button" role="tab" aria-selected="false" aria-controls="work-panel" tabindex="-1" data-mode="analysis"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></svg><span data-i18n="analysisTab"></span></button>
-    </div>
-    <section id="work-panel" role="tabpanel" aria-labelledby="tab-human" class="work-panel">
-      <div class="workspace">
-        <section class="card editor-card reveal" aria-labelledby="editor-title">
-          <div class="card-heading"><div class="heading-group"><span class="step" aria-hidden="true">01</span><h2 id="editor-title" data-i18n="editorTitle"></h2></div><button type="button" id="example-button" class="text-button"><span data-i18n="example"></span><span aria-hidden="true">↗</span></button></div>
-          <div class="input-toolbar"><label for="language" data-i18n="language"></label><select id="language"><option value="auto" data-i18n="auto"></option><option value="da" data-i18n="da"></option><option value="de" data-i18n="de"></option><option value="en" data-i18n="en"></option></select></div>
-          <label for="text-input" class="sr-only" data-i18n="inputLabel"></label>
-          <textarea id="text-input" spellcheck="false" data-placeholder="inputPlaceholder" aria-describedby="word-count input-error privacy-note"></textarea>
-          <div class="input-meta"><span id="language-status"></span><span id="word-count"></span></div>
-          <div id="human-options" class="human-options">
-            <fieldset class="intensity"><legend data-i18n="intensity"></legend><div class="segmented">
-              <label><input type="radio" name="intensity" value="light"><span data-i18n="light"></span></label><label><input type="radio" name="intensity" value="medium" checked><span data-i18n="medium"></span></label><label><input type="radio" name="intensity" value="strong"><span data-i18n="strong"></span></label>
-            </div><p class="hint" data-i18n="intensityHelp"></p></fieldset>
-            <div class="tone-field"><label for="tone" data-i18n="tone"></label><select id="tone"><option value="neutral" data-i18n="neutral"></option><option value="school" data-i18n="school"></option><option value="casual" data-i18n="casual"></option></select></div><p id="server-note" class="hint"></p><details class="protected-details"><summary data-i18n="protectedTitle"></summary><label class="sr-only" for="protected-terms" data-i18n="protectedLabel"></label><textarea id="protected-terms" rows="2" data-placeholder="protectedPlaceholder" aria-describedby="protected-help"></textarea><p id="protected-help" class="hint" data-i18n="protectedHelp"></p></details>
-          </div>
-          <p id="input-error" class="notice error" role="alert" hidden></p>
-          <div class="editor-actions"><div class="clear-actions"><button type="button" class="quiet-button" id="clear-button" disabled data-i18n="clear"></button><button type="button" class="quiet-button" id="restore-clear" hidden data-i18n="restoreClear"></button></div><div id="primary-actions" class="primary-actions"><button type="button" id="cancel-button" class="secondary-button" hidden data-i18n="cancel"></button><button type="button" class="primary-button" id="run-button" disabled><span class="run-icon" aria-hidden="true">✦</span><span id="run-label" data-i18n="primaryHuman"></span><span class="spinner" aria-hidden="true"></span></button></div></div>
-          <div class="draft-line"><span class="status-dot" aria-hidden="true"></span><span id="draft-status" data-i18n="draftEmpty"></span></div>
-          <p id="privacy-note" class="hint privacy-note"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span data-i18n="privacy"></span></p>
-        </section>
-        <aside id="human-summary" class="card summary-card reveal" aria-labelledby="human-summary-title">
-          <div class="card-heading"><div class="heading-group"><span class="step" aria-hidden="true">02</span><h2 id="human-summary-title" data-i18n="resultHuman"></h2></div><span id="provider-pill" class="small-pill" data-i18n="ready"></span></div>
-          <div id="ai-skeleton" class="ai-skeleton" hidden role="status"><div class="skeleton-lines" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p id="skeleton-message" class="hint" data-i18n="aiLoading"></p></div><div id="human-empty" class="empty-state"><div class="empty-art" aria-hidden="true"><div class="paper"><i></i><i></i><i></i><i></i></div><span>✦</span></div><h3 data-i18n="emptyHuman"></h3><p data-i18n="emptyHumanBody"></p></div>
-          <div id="human-summary-result" hidden><div class="change-total"><strong id="change-total">0</strong><div><h3 data-i18n="changes"></h3><p id="retained-count"></p></div><span class="done-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12 4 4 10-10"/></svg></span></div><div id="type-counts" class="type-counts"></div><p id="protected-count" class="hint"></p><div class="score-pair"><div><p data-i18n="scoreBefore"></p><div class="mini-gauge gauge" id="before-gauge" role="img"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="track" cx="50" cy="50" r="41"/><circle class="progress" cx="50" cy="50" r="41" pathLength="100"/></svg><strong class="gauge-number">0<span>%</span></strong></div></div><span class="score-arrow" aria-hidden="true">→</span><div><p data-i18n="scoreAfter"></p><div class="mini-gauge gauge" id="after-gauge" role="img"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="track" cx="50" cy="50" r="41"/><circle class="progress" cx="50" cy="50" r="41" pathLength="100"/></svg><strong class="gauge-number">0<span>%</span></strong></div></div></div><p class="hint score-note" data-i18n="scoreNote"></p><p id="fallback-note" class="notice" hidden></p><p id="score-not-lower" class="hint" data-i18n="scoreNotLower" hidden></p><p id="coarse-note" class="hint" data-i18n="coarseDiff" hidden></p><p id="skipped-note" class="hint"></p><p class="notice" data-i18n="protectionNote"></p></div>
-        </aside>
-        <aside id="analysis-summary" class="card summary-card reveal" aria-labelledby="analysis-title" hidden><div class="card-heading"><div class="heading-group"><span class="step" aria-hidden="true">02</span><h2 id="analysis-title" data-i18n="resultAnalysis"></h2></div><span id="analysis-language" class="small-pill"></span></div><div id="analysis-empty" class="empty-state"><div class="empty-art" aria-hidden="true"><div class="paper"><i></i><i></i><i></i><i></i></div><span>⌕</span></div><h3 data-i18n="emptyAnalysis"></h3><p data-i18n="emptyAnalysisBody"></p></div><div id="analysis-result" hidden><div class="analysis-score"><div class="large-gauge gauge" id="analysis-gauge" role="img"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="track" cx="50" cy="50" r="41"/><circle class="progress" cx="50" cy="50" r="41" pathLength="100"/></svg><strong class="gauge-number">0<span>%</span></strong></div><div><p class="eyebrow" data-i18n="analysisLabel"></p><h3 id="analysis-level"></h3><p id="analysis-description" class="hint"></p></div></div><p class="notice" data-i18n="analysisDisclaimer"></p><p id="short-note" class="hint" data-i18n="shortNote" hidden></p><div class="stats"><div><strong id="stat-words"></strong><span data-i18n="words"></span></div><div><strong id="stat-sentences"></strong><span data-i18n="sentences"></span></div><div><strong id="stat-average"></strong><span data-i18n="meanLength"></span></div></div><h3 class="small-heading" data-i18n="signalsTitle"></h3><div id="signals"></div><details class="calculation"><summary data-i18n="calculation"></summary><div id="calculation"></div></details></div></aside>
-      </div>
-      <section id="human-output" class="card output-card reveal" aria-labelledby="output-title" hidden>
-        <div class="output-heading"><div><p class="eyebrow" data-i18n="humanTitle"></p><h2 id="output-title" data-i18n="resultTitle"></h2></div><div class="view-tabs" role="group" data-aria="viewAria"><button type="button" data-view="modified" aria-pressed="true" data-aria="modifiedAria" data-i18n="modified"></button><button type="button" data-view="original" aria-pressed="false" data-aria="originalAria" data-i18n="original"></button><button type="button" data-view="compare" aria-pressed="false" data-aria="compareAria" data-i18n="compare"></button></div></div>
-        <p class="hint own-text-note" data-i18n="ownTextNote"></p><div id="legend" class="legend" data-aria="legendAria"></div><p class="hint" data-i18n="reviewHint"></p><p id="no-changes" class="notice" hidden></p>
-        <div id="modified-view" class="document-view"><div id="changed-document" class="document annotated-document" data-aria="documentAria"></div></div>
-        <div id="original-view" class="document-view" hidden><div id="original-document" class="document"></div></div>
-        <div id="compare-view" class="compare-grid document-view" hidden><div><h3 class="compare-label" data-i18n="original"></h3><div id="compare-original" class="document"></div></div><div><h3 class="compare-label" data-i18n="modified"></h3><div id="compare-changed" class="document annotated-document"></div></div></div>
-        <div class="output-actions"><div class="action-group"><button type="button" class="secondary-button copy-button" id="copy-human"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M15 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3"/></svg><span data-i18n="copy"></span></button><button type="button" class="quiet-button" id="clean-human" data-i18n="clean"></button></div><button type="button" class="quiet-button" id="undo-all" data-i18n="undoAll"></button></div>
-        <details id="review-details" class="review-details"><summary><span data-i18n="reviewTitle"></span><span id="review-count" class="small-pill"></span></summary><ol id="change-list" class="change-list"></ol></details>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <meta
+      name="description"
+      content="AI-tjek: lokal tekstanalyse og AI-omskrivning på dansk, tysk og engelsk. Se ændringerne og fortryd dem enkeltvis."
+    />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://*.workers.dev; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="theme-color" content="#0064d2" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="AI-tjek" />
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+    <title>AI-tjek — Humanisér tekst med fuld kontrol</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%230067d6'/%3E%3Cpath d='m17 33 10 10 21-23' fill='none' stroke='white' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="./css/base.css" />
+    <link rel="stylesheet" href="./css/components.css" />
+    <link rel="stylesheet" href="./css/animations.css" />
+    <script type="module" src="./js/ui.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#text-input" data-i18n="skip"></a>
+    <div class="ambient" aria-hidden="true"></div>
+    <header class="site-header">
+      <nav class="wrap navigation" data-aria="navAria">
+        <a href="#top" class="brand"
+          ><span class="brand-icon" aria-hidden="true"
+            ><svg viewBox="0 0 24 24"><path d="m6 12 4 4 8-9" /></svg></span
+          ><span data-i18n="brand"></span><span class="version" data-i18n="beta"></span
+        ></a>
+        <a href="#about" class="nav-help" data-i18n="navHelp"></a
+        ><span class="local-pill"><i aria-hidden="true"></i><span data-i18n="local"></span></span>
+      </nav>
+    </header>
+    <main id="top" class="wrap">
+      <section class="hero reveal">
+        <p class="eyebrow" data-i18n="eyebrow"></p>
+        <h1 data-i18n="heroTitle"></h1>
+        <p class="hero-description" data-i18n="heroDescription"></p>
       </section>
-      <section id="analysis-output" class="card output-card reveal" aria-labelledby="marks-title" hidden><div class="card-heading"><h2 id="marks-title" data-i18n="marksTitle"></h2><div class="action-group"><button type="button" class="quiet-button" id="clean-input" data-i18n="clean"></button><button type="button" class="secondary-button copy-button" id="copy-input" data-i18n="copyInput"></button></div></div><p class="hint" data-i18n="marksNote"></p><div id="analysis-document" class="document annotated-document"></div></section>
-    </section>
-    <section id="about" class="about-section reveal" aria-labelledby="about-title"><div class="section-intro"><p class="eyebrow" data-i18n="navHelp"></p><h2 id="about-title" data-i18n="knowledgeTitle"></h2></div><div class="knowledge-grid"><article class="card knowledge-card reveal"><span class="step" aria-hidden="true">01</span><h3 data-i18n="knowledgeOneTitle"></h3><p data-i18n="knowledgeOne"></p></article><article class="card knowledge-card reveal"><span class="step" aria-hidden="true">02</span><h3 data-i18n="knowledgeTwoTitle"></h3><p data-i18n="knowledgeTwo"></p></article><article class="card knowledge-card reveal"><span class="step" aria-hidden="true">03</span><h3 data-i18n="knowledgeThreeTitle"></h3><p data-i18n="knowledgeThree"></p></article></div><p class="language-note" data-i18n="languageNote"></p><details class="card method-details reveal"><summary data-i18n="methodTitle"></summary><p data-i18n="methodBody"></p><p data-i18n="cleanNote"></p><div class="source-links"><a href="https://aclanthology.org/2025.findings-naacl.271/" target="_blank" rel="noreferrer noopener" data-i18n="research"></a><a href="https://aclanthology.org/2023.emnlp-main.616/" target="_blank" rel="noreferrer noopener" data-i18n="multilingual"></a></div></details></section>
-  </main>
-  <footer class="wrap footer"><a href="#top" class="brand" data-i18n="brand"></a><p data-i18n="footer"></p><a href="https://github.com/maltheyong-beep/ai-tjek" target="_blank" rel="noreferrer noopener" data-i18n="source"></a></footer>
-  <dialog id="change-sheet" class="change-sheet" aria-labelledby="sheet-title"><div class="sheet-heading"><h2 id="sheet-title" data-i18n="sheetTitle"></h2><button type="button" id="sheet-close" class="quiet-button" data-aria="closeSheet">×</button></div><div id="sheet-content" class="sheet-content"></div><div id="sheet-actions" class="sheet-actions"><button type="button" id="sheet-undo" class="secondary-button" data-i18n="undo"></button><button type="button" id="sheet-keep" class="primary-button" data-i18n="keep"></button></div></dialog>
-  <div id="tooltip" class="tooltip" role="tooltip" hidden></div><div id="toast" class="toast" role="status" aria-live="polite" hidden></div><div id="live-status" class="sr-only" role="status" aria-live="polite"></div>
-  <template id="check-icon"><svg class="check-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4 10-10"/></svg></template>
-  <noscript><p class="noscript">Slå JavaScript til. AI-tjek bruger lokale ES-moduler og kræver en webadresse, fx GitHub Pages.</p></noscript>
-</body>
+      <div class="mode-tabs" role="tablist" data-aria="modeAria">
+        <button
+          id="tab-human"
+          type="button"
+          role="tab"
+          aria-selected="true"
+          aria-controls="work-panel"
+          data-mode="human"
+        >
+          <span aria-hidden="true">✦</span><span data-i18n="humanTab"></span>
+        </button>
+        <button
+          id="tab-analysis"
+          type="button"
+          role="tab"
+          aria-selected="false"
+          aria-controls="work-panel"
+          tabindex="-1"
+          data-mode="analysis"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="10" cy="10" r="6" />
+            <path d="m15 15 5 5" /></svg
+          ><span data-i18n="analysisTab"></span>
+        </button>
+      </div>
+      <section id="work-panel" role="tabpanel" aria-labelledby="tab-human" class="work-panel">
+        <div class="workspace">
+          <section class="card editor-card reveal" aria-labelledby="editor-title">
+            <div class="card-heading">
+              <div class="heading-group">
+                <span class="step" aria-hidden="true">01</span>
+                <h2 id="editor-title" data-i18n="editorTitle"></h2>
+              </div>
+              <button type="button" id="example-button" class="text-button">
+                <span data-i18n="example"></span><span aria-hidden="true">↗</span>
+              </button>
+            </div>
+            <div class="input-toolbar">
+              <label for="language" data-i18n="language"></label
+              ><select id="language">
+                <option value="auto" data-i18n="auto"></option>
+                <option value="da" data-i18n="da"></option>
+                <option value="de" data-i18n="de"></option>
+                <option value="en" data-i18n="en"></option>
+              </select>
+            </div>
+            <label for="text-input" class="sr-only" data-i18n="inputLabel"></label>
+            <textarea
+              id="text-input"
+              spellcheck="false"
+              data-placeholder="inputPlaceholder"
+              aria-describedby="word-count input-error privacy-note"
+            ></textarea>
+            <div class="input-meta"><span id="language-status"></span><span id="word-count"></span></div>
+            <div id="human-options" class="human-options">
+              <fieldset class="intensity">
+                <legend data-i18n="intensity"></legend>
+                <div class="segmented">
+                  <label><input type="radio" name="intensity" value="light" /><span data-i18n="light"></span></label
+                  ><label
+                    ><input type="radio" name="intensity" value="medium" checked /><span
+                      data-i18n="medium"
+                    ></span></label
+                  ><label><input type="radio" name="intensity" value="strong" /><span data-i18n="strong"></span></label>
+                </div>
+                <p class="hint" data-i18n="intensityHelp"></p>
+              </fieldset>
+              <div class="tone-field">
+                <label for="tone" data-i18n="tone"></label
+                ><select id="tone">
+                  <option value="neutral" data-i18n="neutral"></option>
+                  <option value="school" data-i18n="school"></option>
+                  <option value="casual" data-i18n="casual"></option>
+                </select>
+              </div>
+              <p id="server-note" class="hint"></p>
+              <details class="protected-details">
+                <summary data-i18n="protectedTitle"></summary>
+                <label class="sr-only" for="protected-terms" data-i18n="protectedLabel"></label
+                ><textarea
+                  id="protected-terms"
+                  rows="2"
+                  data-placeholder="protectedPlaceholder"
+                  aria-describedby="protected-help"
+                ></textarea>
+                <p id="protected-help" class="hint" data-i18n="protectedHelp"></p>
+              </details>
+            </div>
+            <p id="input-error" class="notice error" role="alert" hidden></p>
+            <div class="editor-actions">
+              <div class="clear-actions">
+                <button type="button" class="quiet-button" id="clear-button" disabled data-i18n="clear"></button
+                ><button type="button" class="quiet-button" id="restore-clear" hidden data-i18n="restoreClear"></button>
+              </div>
+              <div id="primary-actions" class="primary-actions">
+                <button type="button" id="cancel-button" class="secondary-button" hidden data-i18n="cancel"></button
+                ><button type="button" class="primary-button" id="run-button" disabled>
+                  <span class="run-icon" aria-hidden="true">✦</span><span id="run-label" data-i18n="primaryHuman"></span
+                  ><span class="spinner" aria-hidden="true"></span>
+                </button>
+              </div>
+            </div>
+            <div class="draft-line">
+              <span class="status-dot" aria-hidden="true"></span><span id="draft-status" data-i18n="draftEmpty"></span>
+            </div>
+            <p id="privacy-note" class="hint privacy-note">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="5" y="10" width="14" height="11" rx="3" />
+                <path d="M8 10V7a4 4 0 0 1 8 0v3" /></svg
+              ><span data-i18n="privacy"></span>
+            </p>
+          </section>
+          <aside id="human-summary" class="card summary-card reveal" aria-labelledby="human-summary-title">
+            <div class="card-heading">
+              <div class="heading-group">
+                <span class="step" aria-hidden="true">02</span>
+                <h2 id="human-summary-title" data-i18n="resultHuman"></h2>
+              </div>
+              <span id="provider-pill" class="small-pill" data-i18n="ready"></span>
+            </div>
+            <div id="ai-skeleton" class="ai-skeleton" hidden role="status">
+              <div class="skeleton-lines" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+              <p id="skeleton-message" class="hint" data-i18n="aiLoading"></p>
+            </div>
+            <div id="human-empty" class="empty-state">
+              <div class="empty-art" aria-hidden="true">
+                <div class="paper"><i></i><i></i><i></i><i></i></div>
+                <span>✦</span>
+              </div>
+              <h3 data-i18n="emptyHuman"></h3>
+              <p data-i18n="emptyHumanBody"></p>
+            </div>
+            <div id="human-summary-result" hidden>
+              <div class="change-total">
+                <strong id="change-total">0</strong>
+                <div>
+                  <h3 data-i18n="changes"></h3>
+                  <p id="retained-count"></p>
+                </div>
+                <span class="done-check" aria-hidden="true"
+                  ><svg viewBox="0 0 24 24"><path d="m5 12 4 4 10-10" /></svg
+                ></span>
+              </div>
+              <div id="type-counts" class="type-counts"></div>
+              <p id="protected-count" class="hint"></p>
+              <div class="score-pair">
+                <div>
+                  <p data-i18n="scoreBefore"></p>
+                  <div class="mini-gauge gauge" id="before-gauge" role="img">
+                    <svg viewBox="0 0 100 100" aria-hidden="true">
+                      <circle class="track" cx="50" cy="50" r="41" />
+                      <circle class="progress" cx="50" cy="50" r="41" pathLength="100" /></svg
+                    ><strong class="gauge-number">0<span>%</span></strong>
+                  </div>
+                </div>
+                <span class="score-arrow" aria-hidden="true">→</span>
+                <div>
+                  <p data-i18n="scoreAfter"></p>
+                  <div class="mini-gauge gauge" id="after-gauge" role="img">
+                    <svg viewBox="0 0 100 100" aria-hidden="true">
+                      <circle class="track" cx="50" cy="50" r="41" />
+                      <circle class="progress" cx="50" cy="50" r="41" pathLength="100" /></svg
+                    ><strong class="gauge-number">0<span>%</span></strong>
+                  </div>
+                </div>
+              </div>
+              <p class="hint score-note" data-i18n="scoreNote"></p>
+              <p id="fallback-note" class="notice" hidden></p>
+              <p id="score-not-lower" class="hint" data-i18n="scoreNotLower" hidden></p>
+              <p id="coarse-note" class="hint" data-i18n="coarseDiff" hidden></p>
+              <p id="skipped-note" class="hint"></p>
+              <p class="notice" data-i18n="protectionNote"></p>
+            </div>
+          </aside>
+          <aside id="analysis-summary" class="card summary-card reveal" aria-labelledby="analysis-title" hidden>
+            <div class="card-heading">
+              <div class="heading-group">
+                <span class="step" aria-hidden="true">02</span>
+                <h2 id="analysis-title" data-i18n="resultAnalysis"></h2>
+              </div>
+              <span id="analysis-language" class="small-pill"></span>
+            </div>
+            <div id="analysis-empty" class="empty-state">
+              <div class="empty-art" aria-hidden="true">
+                <div class="paper"><i></i><i></i><i></i><i></i></div>
+                <span>⌕</span>
+              </div>
+              <h3 data-i18n="emptyAnalysis"></h3>
+              <p data-i18n="emptyAnalysisBody"></p>
+            </div>
+            <div id="analysis-result" hidden>
+              <div class="analysis-score">
+                <div class="large-gauge gauge" id="analysis-gauge" role="img">
+                  <svg viewBox="0 0 100 100" aria-hidden="true">
+                    <circle class="track" cx="50" cy="50" r="41" />
+                    <circle class="progress" cx="50" cy="50" r="41" pathLength="100" /></svg
+                  ><strong class="gauge-number">0<span>%</span></strong>
+                </div>
+                <div>
+                  <p class="eyebrow" data-i18n="analysisLabel"></p>
+                  <h3 id="analysis-level"></h3>
+                  <p id="analysis-description" class="hint"></p>
+                </div>
+              </div>
+              <p class="notice" data-i18n="analysisDisclaimer"></p>
+              <p id="short-note" class="hint" data-i18n="shortNote" hidden></p>
+              <div class="stats">
+                <div><strong id="stat-words"></strong><span data-i18n="words"></span></div>
+                <div><strong id="stat-sentences"></strong><span data-i18n="sentences"></span></div>
+                <div><strong id="stat-average"></strong><span data-i18n="meanLength"></span></div>
+              </div>
+              <h3 class="small-heading" data-i18n="signalsTitle"></h3>
+              <div id="signals"></div>
+              <details class="calculation">
+                <summary data-i18n="calculation"></summary>
+                <div id="calculation"></div>
+              </details>
+            </div>
+          </aside>
+        </div>
+        <section id="human-output" class="card output-card reveal" aria-labelledby="output-title" hidden>
+          <div class="output-heading">
+            <div>
+              <p class="eyebrow" data-i18n="humanTitle"></p>
+              <h2 id="output-title" data-i18n="resultTitle"></h2>
+            </div>
+            <div class="view-tabs" role="group" data-aria="viewAria">
+              <button
+                type="button"
+                data-view="modified"
+                aria-pressed="true"
+                data-aria="modifiedAria"
+                data-i18n="modified"
+              ></button
+              ><button
+                type="button"
+                data-view="original"
+                aria-pressed="false"
+                data-aria="originalAria"
+                data-i18n="original"
+              ></button
+              ><button
+                type="button"
+                data-view="compare"
+                aria-pressed="false"
+                data-aria="compareAria"
+                data-i18n="compare"
+              ></button>
+            </div>
+          </div>
+          <p class="hint own-text-note" data-i18n="ownTextNote"></p>
+          <div id="legend" class="legend" data-aria="legendAria"></div>
+          <p class="hint" data-i18n="reviewHint"></p>
+          <p id="no-changes" class="notice" hidden></p>
+          <div id="modified-view" class="document-view">
+            <div id="changed-document" class="document annotated-document" data-aria="documentAria"></div>
+          </div>
+          <div id="original-view" class="document-view" hidden><div id="original-document" class="document"></div></div>
+          <div id="compare-view" class="compare-grid document-view" hidden>
+            <div>
+              <h3 class="compare-label" data-i18n="original"></h3>
+              <div id="compare-original" class="document"></div>
+            </div>
+            <div>
+              <h3 class="compare-label" data-i18n="modified"></h3>
+              <div id="compare-changed" class="document annotated-document"></div>
+            </div>
+          </div>
+          <div class="output-actions">
+            <div class="action-group">
+              <button type="button" class="secondary-button copy-button" id="copy-human">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="8" y="8" width="12" height="13" rx="2" />
+                  <path d="M15 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3" /></svg
+                ><span data-i18n="copy"></span></button
+              ><button type="button" class="quiet-button" id="clean-human" data-i18n="clean"></button>
+            </div>
+            <button type="button" class="quiet-button" id="undo-all" data-i18n="undoAll"></button>
+          </div>
+          <details id="review-details" class="review-details">
+            <summary><span data-i18n="reviewTitle"></span><span id="review-count" class="small-pill"></span></summary>
+            <ol id="change-list" class="change-list"></ol>
+          </details>
+        </section>
+        <section id="analysis-output" class="card output-card reveal" aria-labelledby="marks-title" hidden>
+          <div class="card-heading">
+            <h2 id="marks-title" data-i18n="marksTitle"></h2>
+            <div class="action-group">
+              <button type="button" class="quiet-button" id="clean-input" data-i18n="clean"></button
+              ><button
+                type="button"
+                class="secondary-button copy-button"
+                id="copy-input"
+                data-i18n="copyInput"
+              ></button>
+            </div>
+          </div>
+          <p class="hint" data-i18n="marksNote"></p>
+          <div id="analysis-document" class="document annotated-document"></div>
+        </section>
+      </section>
+      <section id="about" class="about-section reveal" aria-labelledby="about-title">
+        <div class="section-intro">
+          <p class="eyebrow" data-i18n="navHelp"></p>
+          <h2 id="about-title" data-i18n="knowledgeTitle"></h2>
+        </div>
+        <div class="knowledge-grid">
+          <article class="card knowledge-card reveal">
+            <span class="step" aria-hidden="true">01</span>
+            <h3 data-i18n="knowledgeOneTitle"></h3>
+            <p data-i18n="knowledgeOne"></p>
+          </article>
+          <article class="card knowledge-card reveal">
+            <span class="step" aria-hidden="true">02</span>
+            <h3 data-i18n="knowledgeTwoTitle"></h3>
+            <p data-i18n="knowledgeTwo"></p>
+          </article>
+          <article class="card knowledge-card reveal">
+            <span class="step" aria-hidden="true">03</span>
+            <h3 data-i18n="knowledgeThreeTitle"></h3>
+            <p data-i18n="knowledgeThree"></p>
+          </article>
+        </div>
+        <p class="language-note" data-i18n="languageNote"></p>
+        <details class="card method-details reveal">
+          <summary data-i18n="methodTitle"></summary>
+          <p data-i18n="methodBody"></p>
+          <p data-i18n="cleanNote"></p>
+          <div class="source-links">
+            <a
+              href="https://aclanthology.org/2025.findings-naacl.271/"
+              target="_blank"
+              rel="noreferrer noopener"
+              data-i18n="research"
+            ></a
+            ><a
+              href="https://aclanthology.org/2023.emnlp-main.616/"
+              target="_blank"
+              rel="noreferrer noopener"
+              data-i18n="multilingual"
+            ></a>
+          </div>
+        </details>
+      </section>
+    </main>
+    <footer class="wrap footer">
+      <a href="#top" class="brand" data-i18n="brand"></a>
+      <p data-i18n="footer"></p>
+      <a
+        href="https://github.com/maltheyong-beep/ai-tjek"
+        target="_blank"
+        rel="noreferrer noopener"
+        data-i18n="source"
+      ></a>
+    </footer>
+    <dialog id="change-sheet" class="change-sheet" aria-labelledby="sheet-title">
+      <div class="sheet-heading">
+        <h2 id="sheet-title" data-i18n="sheetTitle"></h2>
+        <button type="button" id="sheet-close" class="quiet-button" data-aria="closeSheet">×</button>
+      </div>
+      <div id="sheet-content" class="sheet-content"></div>
+      <div id="sheet-actions" class="sheet-actions">
+        <button type="button" id="sheet-undo" class="secondary-button" data-i18n="undo"></button
+        ><button type="button" id="sheet-keep" class="primary-button" data-i18n="keep"></button>
+      </div>
+    </dialog>
+    <div id="tooltip" class="tooltip" role="tooltip" hidden></div>
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+    <div id="live-status" class="sr-only" role="status" aria-live="polite"></div>
+    <template id="check-icon"
+      ><svg class="check-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4 10-10" /></svg
+    ></template>
+    <noscript
+      ><p class="noscript">
+        Slå JavaScript til. AI-tjek bruger lokale ES-moduler og kræver en webadresse, fx GitHub Pages.
+      </p></noscript
+    >
+  </body>
 </html>

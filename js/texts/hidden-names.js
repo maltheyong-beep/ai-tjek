@@ -1,0 +1,21 @@
+// Samler HIDDEN_NAMES til appens fælles sproglag.
+export const HIDDEN_NAMES = new Map([
+  ['\u00ad', 'soft hyphen'],
+  ['\u200b', 'zero-width space'],
+  ['\u200c', 'zero-width non-joiner'],
+  ['\u200d', 'zero-width joiner'],
+  ['\ufeff', 'BOM / zero-width no-break space'],
+  ['\u2060', 'word joiner'],
+  ['\u200e', 'venstre-mod-højre-markør'],
+  ['\u200f', 'højre-mod-venstre-markør'],
+  ['\u061c', 'arabisk retningsmarkør'],
+  ['\u202a', 'retningskontrol'],
+  ['\u202b', 'retningskontrol'],
+  ['\u202c', 'retningskontrol'],
+  ['\u202d', 'retningskontrol'],
+  ['\u202e', 'retningskontrol'],
+  ['\u2066', 'retningskontrol'],
+  ['\u2067', 'retningskontrol'],
+  ['\u2068', 'retningskontrol'],
+  ['\u2069', 'retningskontrol'],
+]);
