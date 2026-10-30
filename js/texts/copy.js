@@ -1,5 +1,16 @@
 // Samler COPY til appens fælles sproglag.
 export const COPY = {
+  weightsUnavailable: 'Analyseindstillingerne kunne ikke indlæses. Opdatér siden, og prøv igen. Din tekst er bevaret.',
+  unitHeading: (kind, index) => `${kind === 'sentence' ? 'Sætning' : 'Afsnit'} ${index}`,
+  interval: (range) => `${range.lower}–${range.upper} %`,
+  intervalGauge: (range) =>
+    range.insufficient
+      ? 'For kort til en sikker vurdering. Under 80 ord.'
+      : `Heuristisk AI-score: ${range.lower} til ${range.upper} procent. Ukalibreret spænd, ikke en målt sandsynlighed.`,
+  weighted: (signal) =>
+    `Råregel: ${signal.rawPoints} point; vægt ${signal.factor}${signal.capped ? '; fælles loft for beslægtede fraser' : ''}. Vægtet bidrag: ${signal.points} point.`,
+  calculationV2: (baseline, raw, interval, version) =>
+    `${baseline} grundpoint plus vægtede signaler giver et internt mønsterindeks på ${raw}. Beslægtede fraser deler et loft, og høje indeks kræver flere signalfamilier. Vist spænd: ${interval.insufficient ? 'for kort til en sikker vurdering' : `${interval.lower}–${interval.upper} %`}. Vægte: ${version}. Spændet er ikke et statistisk konfidensinterval.`,
   combinationError:
     'Denne kombination af ændringer giver en tom tekst eller mere end 5.000 ord. Brug Fortryd alle, eller vælg en anden ændring først.',
   emptyError: 'Indsæt en tekst med mindst ét ord.',
@@ -16,8 +27,6 @@ export const COPY = {
   toggled: (id, enabled) => `Ændring ${id} er ${enabled ? 'gendannet' : 'fortrudt'}.`,
   changeLabel: (index, type) => `Ændring ${index}: ${type}. Vis før, efter og forklaring.`,
   points: (n) => `${n > 0 ? '+' : ''}${n} point`,
-  gauge: (n) => `Heuristisk AI-score: ${n} procent. Ikke en målt sandsynlighed.`,
-  calculation: (raw, score) => `24 grundpoint plus signalerne giver ${raw} point. Afgrænset til 0–100: ${score} %.`,
   description: {
     low: 'Få eller modstridende mønstre i de lokale regler.',
     medium: 'Flere signaler matcher reglerne. Genre og sprog påvirker resultatet.',
