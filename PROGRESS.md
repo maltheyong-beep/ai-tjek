@@ -50,7 +50,7 @@ Kildetekst i alle lokalt hentede git-revisioner er scannet for kendte API-nøgle
 - DA/DE får forsigtigt bredere spænd end EN; ordlængde og sammensatte ord straffes ikke. Det er en designregel, ikke en påstand om målt sprognøjagtighed.
 - Mere usikkert sprogvalg, få sætninger og uenige længere afsnit udvider spændet. Overlappende før/efter-spænd udlægges ikke som en sikker forbedring.
 - Ingen reel perplexity, serveranalyse, betalt API, fremmede nøgler eller scraping af detektorer. Testtekster er kun funktionstest, ikke et opfundet kalibreringskorpus.
-- Kontrol: 77 automatiske tests samt ESLint og Prettier består. Browserprøver af korte tekster, delmålinger, humanisering/fortryd og manglende vægtfil er gennemført. Ved 360/390/768/1280 px er der ingen vandret overfyldning eller knapper under 44 px i de kontrollerede visninger. Publicering: separat fasegren, slutstatus opdateres efter kontrol.
+- Kontrol: 77 automatiske tests samt ESLint og Prettier består. Browserprøver af korte tekster, delmålinger, humanisering/fortryd og manglende vægtfil er gennemført. Ved 360/390/768/1280 px er der ingen vandret overfyldning eller knapper under 44 px i de kontrollerede visninger. Status: AI-scorefasen er afsluttet og flettet til main. Genregenkendelse er næste separate fase og afventer næste.
 
 ## Næste opgave — kræver næste
 
