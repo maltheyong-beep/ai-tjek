@@ -1,7 +1,9 @@
 // Understøtter tekstbehandling og visning uden eksterne biblioteker i browseren.
+import { combineSignals, estimateInterval } from './analysis-scoring.js';
+import { analyzeUnits } from './analysis-units.js';
+import { getAnalysisWeights } from './analysis-weights.js';
 import { LANGUAGES, COPY, SIGNAL_COPY } from './i18n.js';
 import {
-  BASE_SCORE,
   clamp,
   mean,
   unique,
@@ -207,7 +209,7 @@ function measureTypography(c) {
   );
 }
 
-export function analyzeText(original, requestedLanguage = 'auto') {
+export function analyzeText(original, requestedLanguage = 'auto', { includeUnits = true } = {}) {
   original = String(original);
   const words = validateText(original);
   const projection = projectText(original);
@@ -242,16 +244,20 @@ export function analyzeText(original, requestedLanguage = 'auto') {
     measureVocabulary,
     measureTypography,
   ].forEach((measure) => measure(c));
-  const rawScore = BASE_SCORE + c.signals.reduce((n, s) => n + s.points, 0),
-    score = clamp(Math.round(rawScore), 0, 100);
+  const combined = combineSignals(c.signals),
+    w = getAnalysisWeights();
   const { config, projection: internalProjection, tokens, ...result } = c;
-  return {
+  const analysis = {
     ...result,
+    ...combined,
     automatic: requestedLanguage === 'auto',
     detectionConfident: detected.confident,
-    rawScore,
-    score,
-    level: score < 35 ? 'low' : score < 65 ? 'medium' : 'high',
-    short: words < 100 || sentences.length < 6,
+    level: combined.score < w.levels.medium ? 'low' : combined.score < w.levels.high ? 'medium' : 'high',
+    short: words < w.minimumWords,
   };
+  if (includeUnits) Object.assign(analysis, analyzeUnits(original, analysis, analyzeText));
+  const blocks = analysis.paragraphScores?.filter((p) => !p.short).map((p) => p.score) || [];
+  const disagreement = blocks.length > 1 ? Math.max(...blocks) - Math.min(...blocks) : 0;
+  analysis.interval = estimateInterval(analysis, disagreement);
+  return analysis;
 }
