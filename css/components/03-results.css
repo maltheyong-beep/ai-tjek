@@ -278,3 +278,31 @@
   margin-top: var(--space-5);
   border-top: var(--border) solid var(--line);
 }
+/* Et spænd skal passe i samme cirkel uden at ændre kortenes størrelse. */
+.gauge.interval-gauge .gauge-number {
+  font-size: clamp(24px, 7.3vw, 30px);
+  padding-top: 32%;
+  letter-spacing: -0.055em;
+}
+.mini-gauge.interval-gauge .gauge-number {
+  font-size: 19px;
+}
+.unit-list {
+  padding-left: var(--space-5);
+}
+.unit-row {
+  padding-block: var(--space-3);
+  border-bottom: var(--border) solid var(--line);
+  font-size: var(--font-sm);
+}
+.unit-range {
+  display: block;
+  color: var(--muted);
+}
+.unit-row .hint {
+  margin-top: var(--space-2);
+  max-height: 6em;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

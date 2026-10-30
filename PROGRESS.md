@@ -2,7 +2,7 @@
 
 ## Aftale
 
-Kun én fase ad gangen. Stop efter fase 1 og vent på **næste**. De to ønskede projekter føres separat nedenfor. Ingen genre-, tale- eller scorefunktioner implementeres i oprydningen.
+Kun én fase ad gangen. Stop efter hver fase og vent på **næste**. Brugeren har valgt: først bedre AI-score (detektor fase 2), derefter genregenkendelse (genre fase 2). De to ønskede projekter føres separat nedenfor. Ingen genre-, tale- eller scorefunktioner implementeres i oprydningen.
 
 ## Oprydning, fase 1
 
@@ -40,6 +40,20 @@ Det tidligere ønske om gratis Workers AI, dagskvote og 1.500 ord pr. AI-kald li
 
 Kildetekst i alle lokalt hentede git-revisioner er scannet for kendte API-nøgle- og private-key-mønstre uden fund. Testene bruger tydeligt fiktive secrets. Det beviser ikke fravær af alle mulige hemmeligheder. GitHubs eksisterende historik indeholder almindelige forfatter-/committermetadata, herunder en forfattermail; de er ikke omskrevet eller slettet.
 
+## Detektor, fase 2 — bedre lokal score
+
+- Vægte, signalfamilier, fraseloft, høj-score-port og intervalbredder er samlet i `data/vaegte.json`, indlæst og valideret fra samme kilde i browser og Node.
+- Overgange og klichéer deler et loft. Højt internt indeks kræver flere positive signalfamilier. Pæn tegnsætning, manglende personlig stemme og usynlige tegn øger ikke scoren.
+- Samlet visning og humaniseringens før/efter viser afrundede spænd. De er bevidst ukalibrerede følsomhedsspænd, **ikke statistiske konfidensintervaller** eller målte sandsynligheder.
+- Under 80 ord vises “For kort til en sikker vurdering” og ingen præcis procent i cirklen. Korte deltekster markeres tilsvarende.
+- Sætninger og afsnit beregnes med originale positioner og dokumentets valgte sprog. Afsnit følger blanklinjer. Foldbar delvisning er pagineret i portioner på 20.
+- DA/DE får forsigtigt bredere spænd end EN; ordlængde og sammensatte ord straffes ikke. Det er en designregel, ikke en påstand om målt sprognøjagtighed.
+- Mere usikkert sprogvalg, få sætninger og uenige længere afsnit udvider spændet. Overlappende før/efter-spænd udlægges ikke som en sikker forbedring.
+- Ingen reel perplexity, serveranalyse, betalt API, fremmede nøgler eller scraping af detektorer. Testtekster er kun funktionstest, ikke et opfundet kalibreringskorpus.
+- Kontrol: 77 automatiske tests samt ESLint og Prettier består. Browserprøver af korte tekster, delmålinger, humanisering/fortryd og manglende vægtfil er gennemført. Ved 360/390/768/1280 px er der ingen vandret overfyldning eller knapper under 44 px i de kontrollerede visninger. Publicering: separat fasegren, slutstatus opdateres efter kontrol.
+
 ## Næste opgave — kræver næste
 
-Afklar hvilket spor der fortsættes: genreprojektets fase 2 (genrevalg og regler) eller detektorens fase 2 (lokal score og usikkerhed). Kalibreringens fase 3 er blokeret, til brugeren leverer mindst 20 menneske- og 20 AI-tekster pr. sprog. Ingen tekster må opfindes eller hentes på nettet til det datasæt. Ingen betalt detektor eller fremmede nøgler bruges.
+Genregenkendelse (genreprojektets fase 2) er næste opgave efter brugerens valgte rækkefølge. Den startes først efter afsluttet AI-scorefase og et nyt **næste**. Genrelister/regler og manuel overstyring er endnu ikke implementeret.
+
+Detektorens kalibrering (fase 3) er fortsat blokeret, til brugeren leverer mindst 20 menneske- og 20 AI-tekster pr. sprog. Ingen tekster må opfindes eller hentes på nettet til det datasæt. Der er endnu ingen empiriske tal for nøjagtighed, falske positive eller falske negative.

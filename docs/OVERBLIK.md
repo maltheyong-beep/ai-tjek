@@ -16,6 +16,6 @@ Tekst ind → lokal analyse → humanisering (lokale regler eller konfigureret W
 | Worker og deploy                           | `backend/README.md`                                                            |
 | Næste fase og begrænsninger                | `PROGRESS.md`                                                                  |
 
-Genre-, tale- og vægtdata oprettes i deres egne godkendte faser. `data/` er reserveret til de fremtidige JSON-regler; ingen ubrugte dummyregler tilføjes nu.
+Vægtdata er tilføjet i detektorens fase 2. Genre- og tale-data oprettes i deres egne godkendte faser. `data/` er reserveret til de fremtidige JSON-regler; ingen ubrugte dummyregler tilføjes nu.
 
 Faglig kilde til kommende genrer/analyse: https://indidansk.dk/ . Ingen tekster, tabeller eller billeder er kopieret. Analysehjulets billede undersøges først i analysefasen; dets indhold er endnu ikke verificeret.

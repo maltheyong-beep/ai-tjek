@@ -77,10 +77,20 @@ export const UI = {
   typeTransition: 'Overgang',
   typeSplit: 'Sætning delt',
   typeTypography: 'Typografi',
+  insufficient: 'For kort til en sikker vurdering',
+  unitScoresTitle: 'Se afsnit og sætninger',
+  unitScoresHelp:
+    'Delmålingerne bruger samme sprog og vægte. Under 80 ord vises ingen sikker delscore; sætninger er normalt for korte alene. Tallene er ikke bevis for AI.',
+  paragraphs: 'Afsnit',
+  sentenceUnits: 'Sætninger',
+  moreUnits: 'Vis 20 flere',
+  scoreOverlap:
+    'Spændene overlapper, eller teksten er for kort. Forskellen er ikke en sikker ændring i AI-sandsynlighed.',
   scoreBefore: 'AI-score før',
   scoreAfter: 'AI-score efter',
   scoreTitle: 'Samme lokale måling før og efter',
-  scoreNote: 'Scoren kan gå op, ned eller være uændret. Den er et skøn over sproglige mønstre, ikke et bevis.',
+  scoreNote:
+    'Spændet er et ukalibreret skøn over sproglige mønstre, ikke en målt sandsynlighed eller et statistisk konfidensinterval.',
   protectionNote:
     'Læs altid forslaget igennem. Vi kontrollerer fundne navne, tal, citater og fagudtryk, men kan ikke garantere alle nuancer.',
   noChanges: 'Ingen forsigtige ændringer fundet.',
@@ -104,11 +114,13 @@ export const UI = {
   analysisDone: 'Analysen er klar.',
   changedByHand: 'Kør funktionen igen efter dine rettelser.',
   analysisLabel: 'Heuristisk AI-score',
-  analysisDisclaimer: 'Et estimat. Ikke et bevis. Procenten er en vægtet mønsterscore, ikke en målt sandsynlighed.',
-  low: 'Lav sandsynlighed',
-  mediumScore: 'Middel sandsynlighed',
-  high: 'Høj sandsynlighed',
-  shortNote: 'Kort tekst: færre signaler kan vurderes. Resultatet er ekstra usikkert.',
+  analysisDisclaimer:
+    'Et estimat, ikke et bevis. Spændet er en ukalibreret mønsterscore, ikke en målt sandsynlighed eller et statistisk konfidensinterval.',
+  low: 'Få AI-lignende mønstre',
+  mediumScore: 'Flere AI-lignende mønstre',
+  high: 'Mange AI-lignende mønstre',
+  shortNote:
+    'For kort til en sikker vurdering. Skriv mindst 80 ord. Korte delafsnit og sætninger kan ikke vurderes sikkert alene.',
   words: 'ord',
   sentences: 'sætninger',
   meanLength: 'ord pr. sætning',
@@ -131,7 +143,7 @@ export const UI = {
     'AI-detektion er generelt bedst undersøgt og trænet på engelsk og mere usikker på dansk og tysk. Denne apps nøjagtighed er ikke valideret på noget sprog.',
   methodTitle: 'Begrænsninger, privatliv og kilder',
   methodBody:
-    'AI-scoren er 24 grundpoint plus håndvægtede sproglige signaler, afgrænset til 0–100. Under 35 vises som lav, 35–64 som middel og fra 65 som høj. Kategorierne er ikke statistisk kalibrerede. Der er ingen fuld grammatikkontrol. En menneskeskrevet tekst kan få høj score, og en AI-tekst kan få lav score.',
+    'AI-scoren kombinerer lokale signaler med vægte fra en JSON-fil. Overgange og klichéer deler et loft, så de samme formuleringer ikke tæller fuldt flere gange. Fravær af jeg-form og pæn tegnsætning giver ingen positive AI-point. Spændet er bevidst bredt og ikke statistisk kalibreret. Under 80 ord gives ingen sikker vurdering. Der er ingen fuld grammatikkontrol. En menneskeskrevet tekst kan få høj score, og en AI-tekst kan få lav score.',
   cleanNote:
     'Usynlige tegn kommer også fra Word og kopiering. De tæller 0 point og er ikke statistiske AI-vandmærker. Rensning skåner citater, tal og beskyttede fagudtryk.',
   footer: 'Bygget til redigering med omtanke. Et estimat, ikke et bevis.',
