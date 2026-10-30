@@ -1,5 +1,7 @@
 // Understøtter tekstbehandling og visning uden eksterne biblioteker i browseren.
 import { UI, COPY, LANGUAGES } from './i18n.js';
+import { getAnalysisWeights } from './analysis-weights.js';
+import { renderUnitScores } from './analysis-unit-view.js';
 import { number } from './utils.js';
 import { analyzeText } from './analyze.js';
 import { getFinalText } from './humanize-local.js';
@@ -9,26 +11,39 @@ const gaugeFrames = new WeakMap();
 const $ = (id) => document.getElementById(id);
 export const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-export function animateGauge(node, score, instant = false) {
+export function animateGauge(node, result, instant = false) {
+  const score = result.score,
+    interval = result.interval;
   cancelAnimationFrame(gaugeFrames.get(node));
   const startValue = Number(node.dataset.currentScore) || 0,
     started = performance.now();
   node.dataset.level = score < 35 ? 'low' : score < 65 ? 'medium' : 'high';
-  node.setAttribute('aria-label', COPY.gauge(score));
-  function draw(value) {
+  node.setAttribute('aria-label', COPY.intervalGauge(interval));
+  node.classList.add('interval-gauge');
+  node.dataset.insufficient = String(interval.insufficient);
+  const oldLower = Number(node.dataset.lower) || 0,
+    oldUpper = Number(node.dataset.upper) || 0;
+  node.dataset.lower = String(interval.lower);
+  node.dataset.upper = String(interval.upper);
+  function draw(value, progress = 1) {
     node.dataset.currentScore = String(value);
     const text = node.querySelector('.gauge-number');
-    text.replaceChildren(document.createTextNode(String(Math.round(value))), el('span', '', '%'));
-    node.querySelector('.progress').style.strokeDashoffset = String(100 - value);
+    if (interval.insufficient) text.replaceChildren(document.createTextNode('—'));
+    else {
+      const lower = Math.round(oldLower + (interval.lower - oldLower) * progress),
+        upper = Math.round(oldUpper + (interval.upper - oldUpper) * progress);
+      text.replaceChildren(document.createTextNode(`${lower}–${upper}`), el('span', '', '%'));
+    }
+    node.querySelector('.progress').style.strokeDashoffset = String(interval.insufficient ? 100 : 100 - value);
   }
-  if (instant || reducedMotion()) {
+  if (instant || interval.insufficient || reducedMotion()) {
     draw(score);
     return;
   }
   function frame(now) {
     const t = Math.min(1, (now - started) / 320),
       eased = 1 - (1 - t) ** 3;
-    draw(startValue + (score - startValue) * eased);
+    draw(startValue + (score - startValue) * eased, eased);
     if (t < 1) gaugeFrames.set(node, requestAnimationFrame(frame));
   }
   gaugeFrames.set(node, requestAnimationFrame(frame));
@@ -79,11 +94,16 @@ export function renderHuman(job, { animate = false, view = 'modified', instant =
   $('type-counts').replaceChildren(...Object.entries(counts).map(([type, count]) => chip(type, count)));
   $('protected-count').textContent = COPY.protected(job.protectedRanges.length);
   $('skipped-note').textContent = COPY.skipped(job.skipped);
-  const before = analyzeText(job.original, job.language).score,
-    after = analyzeText(finalText, job.language).score;
+  const before = analyzeText(job.original, job.language),
+    after = analyzeText(finalText, job.language);
   animateGauge($('before-gauge'), before, instant);
   animateGauge($('after-gauge'), after, instant);
-  $('score-not-lower').hidden = after < before;
+  const overlap =
+    before.short ||
+    after.short ||
+    (before.interval.lower <= after.interval.upper && after.interval.lower <= before.interval.upper);
+  $('score-not-lower').hidden = !overlap && after.score < before.score;
+  $('score-not-lower').textContent = overlap ? UI.scoreOverlap : UI.scoreNotLower;
   $('coarse-note').hidden = !job.coarse;
   $('provider-pill').textContent = job.provider === 'claude' ? UI.providerAI : UI.providerLocal;
   const fallback = {
@@ -134,7 +154,9 @@ export function renderAnalysis(result, instant = false) {
   $('analysis-empty').hidden = true;
   $('analysis-result').hidden = false;
   $('analysis-language').textContent = LANGUAGES[result.language].name;
-  $('analysis-level').textContent = { low: UI.low, medium: UI.mediumScore, high: UI.high }[result.level];
+  $('analysis-level').textContent = result.short
+    ? UI.insufficient
+    : { low: UI.low, medium: UI.mediumScore, high: UI.high }[result.level];
   $('analysis-description').textContent = COPY.description[result.level];
   $('stat-words').textContent = number(result.words);
   $('stat-sentences').textContent = number(result.sentences.length);
@@ -152,13 +174,21 @@ export function renderAnalysis(result, instant = false) {
     const li = el('li');
     li.append(
       el('strong', '', `${s.title} (${COPY.points(s.points)}): `),
-      document.createTextNode(`${s.detail} ${s.measurement}`),
+      document.createTextNode(`${s.detail} ${s.measurement} ${COPY.weighted(s)}`),
     );
     list.append(li);
   });
-  $('calculation').replaceChildren(el('p', '', COPY.calculation(result.rawScore, result.score)), list);
+  $('calculation').replaceChildren(
+    el(
+      'p',
+      '',
+      COPY.calculationV2(getAnalysisWeights().baseline, result.rawScore, result.interval, result.weightsVersion),
+    ),
+    list,
+  );
   renderAnalysisDocument($('analysis-document'), result);
-  animateGauge($('analysis-gauge'), result.score, instant);
+  animateGauge($('analysis-gauge'), result, instant);
+  renderUnitScores(result);
 }
 export function enter(node) {
   node.classList.remove('panel-enter');
