@@ -1,0 +1,36 @@
+// Samler HUMAN_RULES til appens fælles sproglag.
+export const HUMAN_RULES = {
+  da: [
+    ['note', 'det er vigtigt at bemærke, at', '', 'filler', 1, true],
+    ['worth', 'det er værd at bemærke, at', '', 'filler', 1, true],
+    ['purpose', 'med henblik på at', 'for at', 'filler', 1, false],
+    ['currently', 'på nuværende tidspunkt', 'nu', 'filler', 1, false],
+    ['moreover', 'derudover', 'desuden', 'transition', 2, false],
+    ['furthermore', 'endvidere', 'desuden', 'transition', 2, false],
+    ['additionally', 'ydermere', 'desuden', 'transition', 2, false],
+    ['conclusion', 'sammenfattende kan det siges, at', '', 'filler', 2, true],
+    ['emphasis', 'det er vigtigt at understrege, at', '', 'filler', 3, true],
+    ['purpose-long', 'med det formål at', 'for at', 'filler', 3, false],
+  ],
+  de: [
+    ['note', 'es ist wichtig zu beachten, dass', 'zu beachten ist, dass', 'filler', 1, true],
+    ['currently', 'zum gegenwärtigen zeitpunkt', 'derzeit', 'filler', 1, false],
+    ['moreover', 'darüber hinaus', 'außerdem', 'transition', 2, false],
+    ['furthermore', 'des weiteren', 'außerdem', 'transition', 2, false],
+    ['conclusion', 'zusammenfassend lässt sich sagen, dass', 'insgesamt gilt, dass', 'filler', 2, true],
+    ['nevertheless', 'nichtsdestotrotz', 'trotzdem', 'transition', 3, false],
+    ['emphasis', 'es ist wichtig zu betonen, dass', 'festzuhalten ist, dass', 'filler', 3, true],
+  ],
+  en: [
+    ['note', 'it is important to note that', '', 'filler', 1, true],
+    ['worth', 'it is worth noting that', '', 'filler', 1, true],
+    ['purpose', 'in order to', 'to', 'filler', 1, false],
+    ['currently', 'at the present time', 'currently', 'filler', 1, false],
+    ['moreover', 'moreover', 'also', 'transition', 2, false],
+    ['furthermore', 'furthermore', 'also', 'transition', 2, false],
+    ['additional', 'additionally', 'also', 'transition', 2, false],
+    ['emphasis-us', 'it is important to emphasize that', '', 'filler', 3, true],
+    ['emphasis-uk', 'it is important to emphasise that', '', 'filler', 3, true],
+    ['purpose-long', 'for the purpose of', 'for', 'filler', 3, false],
+  ],
+};
