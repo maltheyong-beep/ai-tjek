@@ -1,8 +1,8 @@
 // Understøtter tekstbehandling og visning uden eksterne biblioteker i browseren.
 import { LANGUAGES, HIDDEN_NAMES, ODD_SPACE, COPY } from './i18n.js';
 
-import { MAX_WORDS, BASE_SCORE } from './constants.js';
-export { MAX_WORDS, BASE_SCORE };
+import { MAX_WORDS } from './constants.js';
+export { MAX_WORDS };
 export const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
 export const mean = (values) => (values.length ? values.reduce((sum, n) => sum + n, 0) / values.length : 0);
 export const unique = (values) => [...new Set(values)];
